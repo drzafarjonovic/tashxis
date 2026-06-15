@@ -1,7 +1,21 @@
+# Telegram bot framework
 aiogram==3.7.0
+aiofiles==23.2.1
 aiohttp==3.9.5
-asyncpg==0.29.0
-python-dotenv==1.0.1
 
-# AI (v2.0 da yoqiladi — hozircha AI_ENABLED=false bo'lgani uchun shart emas)
+# Pydantic (aiogram 3.7 talab qiladi: >=2.4.1,<2.8)
+pydantic==2.7.4
+pydantic-core==2.18.4
+annotated-types==0.7.0
+
+# Database
+asyncpg==0.29.0
+
+# Utilities
+python-dotenv==1.0.1
+certifi>=2023.7.22
+magic-filter>=1.0.12,<1.1
+typing-extensions>=4.7.0,<=5.0
+
+# AI (v2.0 da yoqiladi)
 # groq==0.9.0
