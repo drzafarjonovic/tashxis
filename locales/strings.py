@@ -1,5 +1,9 @@
 """
-Barcha UI matnlari uchun tarjimalar.
+Barcha UI matnlari uchun tarjimalar (uz / ru / en).
+
+Telegram'ga HTML parse rejimida yuboriladi: <b>...</b>, <i>...</i>.
+Dinamik (foydalanuvchi yoki kasallikdan kelgan) matnlar handlers'da
+html.escape() bilan ekranlanadi.
 """
 
 STRINGS = {
@@ -27,6 +31,11 @@ STRINGS = {
             "Choose your language 👇"
         ),
     },
+    "menu_hint": {
+        "uz": "Boshlash uchun pastdagi tugmani bosing 👇",
+        "ru": "Нажмите кнопку ниже, чтобы начать 👇",
+        "en": "Press the button below to start 👇",
+    },
     "lang_set": {
         "uz": "✅ Til: O'zbek",
         "ru": "✅ Язык: Русский",
@@ -44,21 +53,21 @@ STRINGS = {
     },
     "help_text": {
         "uz": (
-            "ℹ️ *Qanday ishlaydi?*\n\n"
+            "ℹ️ <b>Qanday ishlaydi?</b>\n\n"
             "1. «Tashxisni boshlash»ni bosing\n"
             "2. Har bir savolga «Ha» yoki «Yo'q» deb javob bering\n"
             "3. Bot belgilaringizga mos tashxisni taklif qiladi\n\n"
             "Qayta boshlash uchun /start buyrug'ini yuboring."
         ),
         "ru": (
-            "ℹ️ *Как это работает?*\n\n"
+            "ℹ️ <b>Как это работает?</b>\n\n"
             "1. Нажмите «Начать диагностику»\n"
             "2. Отвечайте «Да» или «Нет» на каждый вопрос\n"
             "3. Бот предложит диагноз, подходящий под ваши симптомы\n\n"
             "Для перезапуска отправьте /start."
         ),
         "en": (
-            "ℹ️ *How does it work?*\n\n"
+            "ℹ️ <b>How does it work?</b>\n\n"
             "1. Press 'Start diagnosis'\n"
             "2. Answer 'Yes' or 'No' to each question\n"
             "3. The bot suggests a diagnosis matching your symptoms\n\n"
@@ -117,19 +126,41 @@ STRINGS = {
 
     # ── NATIJA ────────────────────────────────────────────────────
     "result_header": {
-        "uz": "🩺 *Tashxis natijasi*",
-        "ru": "🩺 *Результат диагностики*",
-        "en": "🩺 *Diagnosis result*",
+        "uz": "🩺 <b>Tashxis natijasi</b>",
+        "ru": "🩺 <b>Результат диагностики</b>",
+        "en": "🩺 <b>Diagnosis result</b>",
     },
     "top_diagnosis": {
         "uz": "Asosiy tashxis ehtimoli",
         "ru": "Наиболее вероятный диагноз",
         "en": "Most likely diagnosis",
     },
+    "confidence_label": {
+        "uz": "Ehtimollik",
+        "ru": "Вероятность",
+        "en": "Confidence",
+    },
     "alternatives_label": {
         "uz": "Muqobil variantlar",
         "ru": "Альтернативные варианты",
         "en": "Alternative possibilities",
+    },
+    "uncertain_result": {
+        "uz": (
+            "🤔 <b>Aniq tashxis qo'yib bo'lmadi.</b>\n\n"
+            "Belgilaringiz bir nechta holatga to'g'ri kelishi mumkin. "
+            "Eng ehtimolli variant quyida, ammo ishonchlilik past."
+        ),
+        "ru": (
+            "🤔 <b>Не удалось поставить точный диагноз.</b>\n\n"
+            "Ваши симптомы могут соответствовать нескольким состояниям. "
+            "Ниже наиболее вероятный вариант, но уверенность низкая."
+        ),
+        "en": (
+            "🤔 <b>Could not determine a clear diagnosis.</b>\n\n"
+            "Your symptoms may match several conditions. "
+            "The most likely option is shown below, but confidence is low."
+        ),
     },
     "red_flags_label": {
         "uz": "⚠️ Zudlik bilan shifokorga:",
@@ -137,14 +168,14 @@ STRINGS = {
         "en": "⚠️ See a doctor urgently if:",
     },
     "ai_explanation_label": {
-        "uz": "💡 AI tushuntirishi:",
-        "ru": "💡 Объяснение ИИ:",
-        "en": "💡 AI explanation:",
+        "uz": "💡 Tushuntirish:",
+        "ru": "💡 Объяснение:",
+        "en": "💡 Explanation:",
     },
     "disclaimer": {
-        "uz": "_(Bu natija tibbiy xulosaga o'xshamasligi mumkin. Aniq tashxis uchun stomatologga murojaat qiling.)_",
-        "ru": "_(Этот результат не является медицинским заключением. Обратитесь к стоматологу.)_",
-        "en": "_(This result is not a medical conclusion. Please see a dentist for an accurate diagnosis.)_",
+        "uz": "<i>(Bu natija tibbiy xulosa emas. Aniq tashxis uchun stomatologga murojaat qiling.)</i>",
+        "ru": "<i>(Этот результат не является медицинским заключением. Обратитесь к стоматологу.)</i>",
+        "en": "<i>(This result is not a medical conclusion. Please see a dentist for an accurate diagnosis.)</i>",
     },
     "restart_hint": {
         "uz": "Qayta tekshirish uchun /start yuboring.",
@@ -155,37 +186,37 @@ STRINGS = {
     # ── RED FLAG ──────────────────────────────────────────────────
     "red_flag_alert": {
         "uz": (
-            "🚨 *DIQQAT — XAVFLI BELGILAR ANIQLANDI!*\n\n"
+            "🚨 <b>DIQQAT — XAVFLI BELGILAR ANIQLANDI!</b>\n\n"
             "Yuqori isitma va yuz/jag'dagi shish bir vaqtda mavjud.\n"
-            "Bu *yiringli jarayon* bo'lishi mumkin.\n\n"
-            "⛑ *Zudlik bilan yuz-jag' xirurgiga yoki shoshilinch yordamga murojaat qiling!*\n\n"
+            "Bu <b>yiringli jarayon</b> bo'lishi mumkin.\n\n"
+            "⛑ <b>Zudlik bilan yuz-jag' xirurgiga yoki shoshilinch yordamga murojaat qiling!</b>\n\n"
             "Kechikish hayot uchun xavfli bo'lishi mumkin."
         ),
         "ru": (
-            "🚨 *ВНИМАНИЕ — ОБНАРУЖЕНЫ ОПАСНЫЕ ПРИЗНАКИ!*\n\n"
+            "🚨 <b>ВНИМАНИЕ — ОБНАРУЖЕНЫ ОПАСНЫЕ ПРИЗНАКИ!</b>\n\n"
             "Высокая температура и отёк лица/челюсти одновременно.\n"
-            "Это может быть *гнойный процесс*.\n\n"
-            "⛑ *Немедленно обратитесь к челюстно-лицевому хирургу или в скорую!*\n\n"
+            "Это может быть <b>гнойный процесс</b>.\n\n"
+            "⛑ <b>Немедленно обратитесь к челюстно-лицевому хирургу или в скорую!</b>\n\n"
             "Промедление может быть опасно для жизни."
         ),
         "en": (
-            "🚨 *WARNING — DANGEROUS SIGNS DETECTED!*\n\n"
+            "🚨 <b>WARNING — DANGEROUS SIGNS DETECTED!</b>\n\n"
             "High fever and facial/jaw swelling are present at the same time.\n"
-            "This could be a *purulent (abscess) process*.\n\n"
-            "⛑ *Seek a maxillofacial surgeon or emergency services immediately!*\n\n"
+            "This could be a <b>purulent (abscess) process</b>.\n\n"
+            "⛑ <b>Seek a maxillofacial surgeon or emergency services immediately!</b>\n\n"
             "Delay may be life-threatening."
         ),
     },
 
-    # ── XATO ─────────────────────────────────────────────────────
+    # ── XATO / HOLAT ──────────────────────────────────────────────
     "unknown_command": {
         "uz": "Tushunmadim. /start buyrug'ini yuboring.",
         "ru": "Не понял. Отправьте /start.",
         "en": "Didn't understand. Please send /start.",
     },
     "session_expired": {
-        "uz": "Seans tugadi. /start buyrug'ini yuboring.",
-        "ru": "Сессия истекла. Отправьте /start.",
+        "uz": "Seans tugagan. Iltimos, /start buyrug'ini yuboring.",
+        "ru": "Сессия истекла. Пожалуйста, отправьте /start.",
         "en": "Session expired. Please send /start.",
     },
 }

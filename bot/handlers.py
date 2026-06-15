@@ -1,45 +1,67 @@
 """
-Bot handlerlari — to'liq Akinator oqimi.
+Bot handlerlari — Akinator oqimi.
 
 Oqim:
-  /start  →  til tanlash  →  lokatsiya (triage)  →  ketma-ket savollar  →  natija
+  /start → til tanlash → muammo joyi (triage) → ketma-ket savollar → natija
 """
 
-import logging
-from aiogram import Router, F
-from aiogram.filters import CommandStart
-from aiogram.types import Message, CallbackQuery
-from aiogram.fsm.context import FSMContext
+from __future__ import annotations
 
-from bot.states import DiagnosticFSM
+import html
+import logging
+
+from aiogram import F, Router
+from aiogram.filters import Command, CommandStart
+from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, Message
+
 from bot.keyboards import (
-    lang_keyboard, main_keyboard,
-    category_keyboard, yes_no_keyboard,
+    category_keyboard,
+    lang_keyboard,
+    main_keyboard,
+    yes_no_keyboard,
+)
+from bot.states import DiagnosticFSM
+from db import repository
+from domain.symptoms import question_text
+from engine import (
+    CATEGORY_MAP,
+    MAX_QUESTIONS,
+    diagnose,
+    get_next_question,
+    is_emergency,
+    should_stop,
 )
 from locales.strings import t
-from engine.akinator import (
-    get_next_question, should_stop_early, get_diagnosis,
-    MIN_QUESTIONS, MAX_QUESTIONS,
-)
-from ai.groq_ai import explain_diagnosis
 
 logger = logging.getLogger(__name__)
 router = Router()
 
 
+def _esc(text: str) -> str:
+    """HTML xavfsiz qilish (dinamik matnlar uchun)."""
+    return html.escape(str(text))
+
+
 # ─────────────────────────────────────────────────────────────────
-#  /start
+#  /start  va  /help
 # ─────────────────────────────────────────────────────────────────
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
-        t("welcome", "uz"),   # boshlang'ich ko'rsatma — har doim uz
+        t("welcome", "uz"),
         reply_markup=lang_keyboard(),
-        parse_mode="Markdown",
     )
     await state.set_state(DiagnosticFSM.lang)
+
+
+@router.message(Command("help"))
+async def cmd_help(message: Message, state: FSMContext):
+    data = await state.get_data()
+    lang = data.get("lang", "uz")
+    await message.answer(t("help_text", lang))
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -49,19 +71,21 @@ async def cmd_start(message: Message, state: FSMContext):
 @router.callback_query(DiagnosticFSM.lang, F.data.startswith("lang_"))
 async def cb_lang(call: CallbackQuery, state: FSMContext):
     await call.answer()
-    lang = call.data.split("_")[1]   # uz | ru | en
-    await state.update_data(lang=lang, symptoms={}, asked=[], category=None)
+    lang = call.data.split("_")[1]  # uz | ru | en
+    await state.update_data(lang=lang)
+
+    await repository.upsert_user(call.from_user.id, lang)
+
     await call.message.edit_text(t("lang_set", lang))
     await call.message.answer(
-        t("welcome", lang),
+        t("menu_hint", lang),
         reply_markup=main_keyboard(lang),
-        parse_mode="Markdown",
     )
-    await state.set_state(None)   # asosiy menyu
+    await state.set_state(None)  # asosiy menyu
 
 
 # ─────────────────────────────────────────────────────────────────
-#  ASOSIY TUGMALAR
+#  ASOSIY MATN TUGMALARI
 # ─────────────────────────────────────────────────────────────────
 
 @router.message(F.text)
@@ -69,13 +93,13 @@ async def text_handler(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
 
-    start_labels = [t("start_btn", l) for l in ("uz", "ru", "en")]
-    help_labels  = [t("help_btn",  l) for l in ("uz", "ru", "en")]
+    start_labels = {t("start_btn", l) for l in ("uz", "ru", "en")}
+    help_labels = {t("help_btn", l) for l in ("uz", "ru", "en")}
 
     if message.text in start_labels:
         await _start_triage(message, state, lang)
     elif message.text in help_labels:
-        await message.answer(t("help_text", lang), parse_mode="Markdown")
+        await message.answer(t("help_text", lang))
     else:
         current = await state.get_state()
         if current is None:
@@ -83,7 +107,7 @@ async def text_handler(message: Message, state: FSMContext):
 
 
 async def _start_triage(message: Message, state: FSMContext, lang: str):
-    await state.update_data(symptoms={}, asked=[])
+    await state.update_data(symptoms={}, asked=[], q_count=0, category=None)
     await message.answer(
         t("choose_location", lang),
         reply_markup=category_keyboard(lang),
@@ -92,19 +116,8 @@ async def _start_triage(message: Message, state: FSMContext, lang: str):
 
 
 # ─────────────────────────────────────────────────────────────────
-#  TRIAGE — KATEGORIA TANLASH
+#  TRIAGE — KATEGORIYA TANLASH
 # ─────────────────────────────────────────────────────────────────
-
-CATEGORY_MAP = {
-    "cat_tooth":       "tooth",
-    "cat_periodontal": "periodontal",
-    "cat_mucosa":      "mucosa",
-    "cat_jaw":         "jaw",
-}
-
-# Tish tanlansa qaysi sub-kategoriyadan boshlash kerakligi — aqlli yo'naltirish
-TOOTH_START_CATEGORIES = ["tooth", "pulp", "periapical"]
-
 
 @router.callback_query(DiagnosticFSM.category, F.data.startswith("cat_"))
 async def cb_category(call: CallbackQuery, state: FSMContext):
@@ -112,18 +125,11 @@ async def cb_category(call: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
 
-    raw_cat = CATEGORY_MAP.get(call.data, "tooth")
+    category = CATEGORY_MAP.get(call.data, "tooth")
+    await state.update_data(category=category, symptoms={}, asked=[], q_count=0)
 
-    # "tooth" tanlansa avval tish simptomlaridan boshlaymiz,
-    # savol oqimi dinamik ravishda pulp/periapical ga o'tadi
-    await state.update_data(
-        category=raw_cat,
-        symptoms={},
-        asked=[],
-        q_count=0,
-    )
-    await call.message.edit_text(f"✅ {call.message.reply_markup.inline_keyboard[0][0].text if False else ''}")
-    await _ask_next(call.message, state, lang, edit=False)
+    await call.message.edit_reply_markup(reply_markup=None)
+    await _ask_next(call.message, state, lang)
     await state.set_state(DiagnosticFSM.questioning)
 
 
@@ -135,94 +141,61 @@ async def cb_category(call: CallbackQuery, state: FSMContext):
 async def cb_answer(call: CallbackQuery, state: FSMContext):
     await call.answer()
     data = await state.get_data()
-    lang      = data.get("lang", "uz")
-    symptoms  = data.get("symptoms", {})
-    asked     = data.get("asked", [])
-    category  = data.get("category", "tooth")
-    q_count   = data.get("q_count", 0)
+    lang = data.get("lang", "uz")
+    symptoms = data.get("symptoms", {})
+    asked = data.get("asked", [])
+    category = data.get("category", "tooth")
+    q_count = data.get("q_count", 0)
 
-    # Javobni parse qilish: "ans_yes_spontaneous_pain" → yes / spontaneous_pain
-    parts = call.data.split("_", 2)   # ["ans", "yes", "spontaneous_pain"]
-    answer  = parts[1]                 # "yes" | "no"
-    qid     = parts[2] if len(parts) > 2 else ""
+    # "ans_yes_spontaneous_pain" → yes / spontaneous_pain
+    parts = call.data.split("_", 2)
+    answer = parts[1]
+    qid = parts[2] if len(parts) > 2 else ""
+    if not qid:
+        return
 
-    # Simptomni yozish
-    symptoms[qid] = (answer == "yes")
-    asked.append(qid)
+    symptoms[qid] = answer == "yes"
+    if qid not in asked:
+        asked.append(qid)
     q_count += 1
 
-    # Dinamik kategoria o'zgartirish (tooth → pulp/periapical)
-    category = _update_category(category, symptoms)
-
     await state.update_data(
-        symptoms=symptoms,
-        asked=asked,
-        q_count=q_count,
-        category=category,
+        symptoms=symptoms, asked=asked, q_count=q_count, category=category
     )
 
-    # Xavf sinovlari — darhol to'xtatish
-    if _is_emergency(symptoms):
-        await call.message.edit_reply_markup(reply_markup=None)
-        await call.message.answer(t("red_flag_alert", lang), parse_mode="Markdown")
+    await call.message.edit_reply_markup(reply_markup=None)
+
+    # Xavfli holat — darhol to'xtatish
+    if is_emergency(symptoms):
+        await call.message.answer(t("red_flag_alert", lang))
         await state.clear()
         return
 
-    # Erta to'xtatish yoki maksimum savolga yetish
-    if q_count >= MAX_QUESTIONS or should_stop_early(category, symptoms, q_count):
-        await call.message.edit_reply_markup(reply_markup=None)
+    # Erta to'xtatish yoki maksimumga yetish
+    if q_count >= MAX_QUESTIONS or should_stop(category, symptoms, q_count):
         await _show_result(call.message, state, lang, symptoms, category)
         return
 
-    # Keyingi savol
-    await call.message.edit_reply_markup(reply_markup=None)
-    await _ask_next(call.message, state, lang, edit=False)
+    await _ask_next(call.message, state, lang)
 
 
-def _update_category(category: str, symptoms: dict) -> str:
-    """
-    Tish bo'limida spontan og'riq yoki tunda og'riq paydo bo'lsa — pulpga,
-    perkussiya og'rig'i yoki tish devital bo'lsa — periapicalga o'tamiz.
-    """
-    if category != "tooth":
-        return category
-    if symptoms.get("spontaneous_pain") or symptoms.get("night_pain"):
-        return "pulp"
-    if symptoms.get("percussion_pain") or symptoms.get("no_sensitivity") or symptoms.get("tooth_discoloration"):
-        return "periapical"
-    return "tooth"
-
-
-def _is_emergency(symptoms: dict) -> bool:
-    return bool(symptoms.get("high_fever") and symptoms.get("jaw_swelling")) or \
-           bool(symptoms.get("fever") and symptoms.get("trismus") and symptoms.get("jaw_swelling"))
-
-
-async def _ask_next(message: Message, state: FSMContext, lang: str, edit: bool = False):
-    data     = await state.get_data()
+async def _ask_next(message: Message, state: FSMContext, lang: str):
+    data = await state.get_data()
     category = data.get("category", "tooth")
-    asked    = data.get("asked", [])
-    q_count  = data.get("q_count", 0)
+    asked = data.get("asked", [])
+    symptoms = data.get("symptoms", {})
+    q_count = data.get("q_count", 0)
 
-    q = get_next_question(category, data.get("symptoms", {}), asked, lang)
-    if q is None:
-        # Barcha savollar tugadi
-        await _show_result(
-            message, state, lang,
-            data.get("symptoms", {}),
-            category,
-        )
+    qid = get_next_question(category, symptoms, asked)
+    if qid is None:
+        await _show_result(message, state, lang, symptoms, category)
         return
 
     text = (
-        f"*{t('question_prefix', lang)} {q_count + 1}:*\n\n"
-        f"{q['text']}"
+        f"<b>{_esc(t('question_prefix', lang))} {q_count + 1}:</b>\n\n"
+        f"{_esc(question_text(qid, lang))}"
     )
-    await message.answer(
-        text,
-        reply_markup=yes_no_keyboard(lang, q["id"]),
-        parse_mode="Markdown",
-    )
+    await message.answer(text, reply_markup=yes_no_keyboard(lang, qid))
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -238,36 +211,55 @@ async def _show_result(
 ):
     await message.answer(t("analyzing", lang))
 
-    result = get_diagnosis(category, symptoms, lang)
-    diagnosis = result["diagnosis"]
-    confidence = int(result["confidence"] * 100)
-    alternatives = result.get("alternatives", [])
-    red_flags = result.get("red_flags", [])
+    result = diagnose(category, symptoms, lang)
 
-    # AI tushuntirishi
-    ai_text = explain_diagnosis(diagnosis, symptoms, lang)
+    # DB ga yozish (xavfsiz — DB o'chiq bo'lsa o'tkazib yuboriladi)
+    await repository.save_diagnosis(
+        telegram_id=message.chat.id,
+        lang=lang,
+        category=category,
+        result=result,
+        symptoms=symptoms,
+    )
 
-    # Natija matni
-    lines = [
-        t("result_header", lang),
-        "",
-        f"🏷 *{t('top_diagnosis', lang)}:* {diagnosis}",
-        f"📊 {'Ehtimollik' if lang == 'uz' else 'Вероятность' if lang == 'ru' else 'Confidence'}: {confidence}%",
+    lines = [t("result_header", lang), ""]
+
+    if result.get("uncertain"):
+        lines += [t("uncertain_result", lang), ""]
+
+    confidence = int(result.get("confidence", 0.0) * 100)
+    lines += [
+        f"🏷 <b>{_esc(t('top_diagnosis', lang))}:</b> {_esc(result['diagnosis'])}",
+        f"📊 {_esc(t('confidence_label', lang))}: {confidence}%",
     ]
 
+    alternatives = result.get("alternatives", [])
     if alternatives:
-        alt_text = ", ".join(alternatives)
-        lines += ["", f"🔄 *{t('alternatives_label', lang)}:* {alt_text}"]
+        alt_text = ", ".join(_esc(a) for a in alternatives)
+        lines += ["", f"🔄 <b>{_esc(t('alternatives_label', lang))}:</b> {alt_text}"]
 
-    if ai_text:
-        lines += ["", f"{t('ai_explanation_label', lang)}", ai_text]
+    explanation = result.get("explanation", "")
+    if explanation:
+        lines += ["", t("ai_explanation_label", lang), _esc(explanation)]
 
+    red_flags = result.get("red_flags", [])
     if red_flags:
         lines += ["", t("red_flags_label", lang)]
-        for rf in red_flags:
-            lines.append(f"  • {rf}")
+        lines += [f"  • {_esc(rf)}" for rf in red_flags]
 
     lines += ["", t("disclaimer", lang), "", t("restart_hint", lang)]
 
-    await message.answer("\n".join(lines), parse_mode="Markdown")
+    await message.answer("\n".join(lines))
     await state.clear()
+
+
+# ─────────────────────────────────────────────────────────────────
+#  ESKIRGAN / MOS KELMAYDIGAN TUGMALAR (fallback)
+# ─────────────────────────────────────────────────────────────────
+
+@router.callback_query()
+async def cb_stale(call: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    lang = data.get("lang", "uz")
+    await call.answer()
+    await call.message.answer(t("session_expired", lang))

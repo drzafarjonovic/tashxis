@@ -1,10 +1,19 @@
-import os
+"""
+AI integratsiyasi (Groq).
+
+v1.1 da AI O'CHIRILGAN (AI_ENABLED=false). Bu modul faqat AI_ENABLED=true
+bo'lganda chaqiriladi. AI o'chiq bo'lsa, bot engine/advice.py dan
+avtomatik tushuntirishdan foydalanadi.
+"""
+
+from __future__ import annotations
+
 import logging
-from typing import Dict, Any
+from typing import Any, Dict
+
+from app.config import settings
 
 logger = logging.getLogger(__name__)
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY") or os.getenv("AI_API_KEY")
 
 SYSTEM_PROMPTS = {
     "uz": (
@@ -25,20 +34,18 @@ SYSTEM_PROMPTS = {
 }
 
 
-def explain_diagnosis(
-    diagnosis: str,
-    symptoms: Dict[str, Any],
-    lang: str = "uz",
-) -> str:
-    fallback = {
-        "uz": f"Bu holat bo'yicha batafsil ma'lumot olish uchun stomatologga murojaat qiling.",
-        "ru": "Для получения подробной информации обратитесь к стоматологу.",
-        "en": "Please see a dentist for more detailed information about this condition.",
-    }
+def is_available() -> bool:
+    """AI yoqilganmi va kalit bormi."""
+    return settings.ai_enabled and bool(settings.groq_api_key)
 
-    if not GROQ_API_KEY:
-        logger.warning("GROQ_API_KEY topilmadi — fallback qaytarilmoqda.")
-        return fallback.get(lang, fallback["uz"])
+
+def explain_diagnosis(diagnosis: str, symptoms: Dict[str, Any], lang: str = "uz") -> str:
+    """
+    AI orqali tashxisni izohlaydi. AI o'chiq yoki xato bo'lsa — bo'sh string
+    qaytaradi (chaqiruvchi tomon avtomatik tavsiyaga tushadi).
+    """
+    if not is_available():
+        return ""
 
     prompt_map = {
         "uz": f"Tashxis: {diagnosis}\nBelgilar: {symptoms}\n\nIzohla:",
@@ -48,18 +55,18 @@ def explain_diagnosis(
 
     try:
         from groq import Groq
-        client = Groq(api_key=GROQ_API_KEY)
+
+        client = Groq(api_key=settings.groq_api_key)
         response = client.chat.completions.create(
             model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPTS.get(lang, SYSTEM_PROMPTS["uz"])},
-                {"role": "user",   "content": prompt_map.get(lang, prompt_map["uz"])},
+                {"role": "user", "content": prompt_map.get(lang, prompt_map["uz"])},
             ],
             max_tokens=300,
             temperature=0.4,
         )
         return response.choices[0].message.content.strip()
-
-    except Exception as exc:
-        logger.error(f"Groq API xatoligi: {exc}")
-        return fallback.get(lang, fallback["uz"])
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Groq API xatoligi: %s", exc)
+        return ""
