@@ -8,3 +8,8 @@ class DiagnosticFSM(StatesGroup):
     localizing   = State()   # Joylashuvni aniqlash (jag'/tomon/tish turi)
     questioning  = State()   # Akinator savollari
     contact      = State()   # Admin bilan aloqa (xabar yozish)
+
+
+class AdminFSM(StatesGroup):
+    awaiting_user_id   = State()   # Individual hisobot uchun user_id kutilmoqda
+    awaiting_interval  = State()   # Interval (sana oralig'i) kutilmoqda

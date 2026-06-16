@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.7.0] - 2026-06 — Admin audit va hisobotlar
+
+### Yangi: Admin paneli (`/admin`, faqat ADMIN_ID egasi uchun)
+Bot obunachilari bo'yicha to'liq audit va hisobot:
+- **Davr hisobotlari:** kunlik / haftalik (7 kun) / oylik (30 kun) / umumiy
+  (barcha vaqt) / **ixtiyoriy interval** (sana oralig'i: `YYYY-MM-DD YYYY-MM-DD`).
+- **Har bir hisobot 3 formatda:** 📈 grafik (PNG — kunlik faollik + top tashxislar),
+  📄 PDF (sammari + top tashxislar jadvali + grafik), 📋 Excel (to'liq audit).
+- **Excel audit varaqlari:** Summary, Sessions (har sessiya: sana, user_id, ism,
+  username, til, kategoriya, yosh, jins, joylashuv, savollar soni, tashxis,
+  ishonch), Answers (har bir savol-javob), Users (obunachilar).
+- **👤 Individual hisobot** — obunachi Telegram ID si bo'yicha: profil + barcha
+  sessiyalari + har bir sessiyadagi savol-javoblar va tashxis (PDF + Excel).
+- **👥 Obunachilar ro'yxati** — Excel + qisqa matnli ro'yxat.
+- Hisobotda obunachi ismi, ID si va username i ko'rsatiladi.
+
+### Ma'lumot to'liqligi
+- `bot_users` ga `first_name`, `last_name`, `username` ustunlari qo'shildi va
+  til tanlashda saqlanadi (hisobotlarda ism/username ko'rsatish uchun).
+
+### Texnik
+- Yangi modullar: `db/reports.py` (audit so'rovlari), `reporting/exporters.py`
+  (Excel/PDF/grafik), `bot/admin.py` (admin router).
+- Yangi kutubxonalar: `openpyxl`, `reportlab`, `matplotlib`.
+- Fayl generatsiyasi alohida threadда (`asyncio.to_thread`) — botni bloklamaydi.
+- DB sozlanmagan bo'lsa yoki kutubxona yo'q bo'lsa — graceful (matnli hisobot/ogohlantirish).
+- Admin uchun `/admin`, `/reply` buyruqlari faqat admin chatida ko'rinadi.
+
 ## [1.6.3] - 2026-06 — Admin contact diagnostics
 
 - Yangi **`/myid`** buyrug'i: foydalanuvchining Telegram ID si va bot uni admin

@@ -16,8 +16,14 @@ from db.database import get_pool
 logger = logging.getLogger(__name__)
 
 
-async def upsert_user(telegram_id: int, lang: str) -> None:
-    """Foydalanuvchini yaratadi yoki tilini/last_seen'ini yangilaydi."""
+async def upsert_user(
+    telegram_id: int,
+    lang: str,
+    first_name: Optional[str] = None,
+    last_name: Optional[str] = None,
+    username: Optional[str] = None,
+) -> None:
+    """Foydalanuvchini yaratadi yoki til/ism/username/last_seen'ini yangilaydi."""
     pool = get_pool()
     if pool is None:
         return
@@ -25,13 +31,16 @@ async def upsert_user(telegram_id: int, lang: str) -> None:
         async with pool.acquire() as conn:
             await conn.execute(
                 """
-                INSERT INTO bot_users (telegram_id, lang)
-                VALUES ($1, $2)
+                INSERT INTO bot_users (telegram_id, lang, first_name, last_name, username)
+                VALUES ($1, $2, $3, $4, $5)
                 ON CONFLICT (telegram_id)
-                DO UPDATE SET lang = EXCLUDED.lang, last_seen = now()
+                DO UPDATE SET lang = EXCLUDED.lang,
+                              first_name = COALESCE(EXCLUDED.first_name, bot_users.first_name),
+                              last_name  = COALESCE(EXCLUDED.last_name,  bot_users.last_name),
+                              username   = COALESCE(EXCLUDED.username,   bot_users.username),
+                              last_seen  = now()
                 """,
-                telegram_id,
-                lang,
+                telegram_id, lang, first_name, last_name, username,
             )
     except Exception as exc:  # noqa: BLE001
         logger.error("upsert_user xatoligi: %s", exc)

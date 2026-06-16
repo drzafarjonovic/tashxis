@@ -5,11 +5,12 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.types import BotCommand
+from aiogram.types import BotCommand, BotCommandScopeChat
 from aiohttp import web
 
 from app.config import settings
 from app.version import APP_NAME, VERSION
+from bot.admin import admin_router
 from bot.handlers import router
 from db.database import close_db, init_db
 
@@ -43,6 +44,20 @@ async def set_commands(bot: Bot) -> None:
         BotCommand(command="help", description="Yordam / Помощь / Help"),
         BotCommand(command="myid", description="Mening ID im / Мой ID / My ID"),
     ])
+    # Admin uchun qo'shimcha buyruqlar (faqat admin chatida ko'rinadi)
+    if settings.admin_enabled:
+        try:
+            await bot.set_my_commands(
+                [
+                    BotCommand(command="admin", description="Admin paneli — hisobotlar"),
+                    BotCommand(command="reply", description="Foydalanuvchiga javob: /reply <id> matn"),
+                    BotCommand(command="myid", description="Mening ID im"),
+                    BotCommand(command="start", description="Boshlash"),
+                ],
+                scope=BotCommandScopeChat(chat_id=settings.admin_id),
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Admin buyruqlarini o'rnatib bo'lmadi: %s", exc)
 
 
 async def main() -> None:
@@ -71,6 +86,7 @@ async def main() -> None:
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
     dp = Dispatcher(storage=MemoryStorage())
+    dp.include_router(admin_router)  # admin paneli — asosiy routerdan oldin
     dp.include_router(router)
 
     await set_commands(bot)
