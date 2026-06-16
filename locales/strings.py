@@ -445,3 +445,25 @@ def t(key: str, lang: str = "uz") -> str:
     """Qisqa tarjima funksiyasi."""
     block = STRINGS.get(key, {})
     return block.get(lang, block.get("uz", key))
+
+
+
+# ─────────────────────────────────────────────────────────────────
+#  3 TILLI WELCOME (til hali tanlanmaganda /start da ko'rsatiladi)
+# ─────────────────────────────────────────────────────────────────
+WELCOME_MULTI = (
+    "🦷 <b>Oral Detect</b>\n\n"
+    "🇺🇿 <b>O'zbekcha</b>\n"
+    "Og'iz, tish, milk va jag' kasalliklari bo'yicha aqlli yordamchi. "
+    "Savollar orqali ehtimolli tashxisni topaman va kasallik haqida ma'lumot beraman.\n"
+    "⚠️ Bu bot tibbiy maslahat o'rnini bosmaydi — aniq tashxis uchun shifokorga murojaat qiling.\n\n"
+    "🇷🇺 <b>Русский</b>\n"
+    "Умный помощник по заболеваниям полости рта, зубов, дёсен и челюсти. "
+    "Через вопросы подберу вероятный диагноз и дам информацию о заболевании.\n"
+    "⚠️ Бот не заменяет консультацию врача.\n\n"
+    "🇬🇧 <b>English</b>\n"
+    "A smart assistant for oral, dental, gum and jaw conditions. "
+    "I find a likely diagnosis through questions and give information about it.\n"
+    "⚠️ This bot does not replace medical advice.\n\n"
+    "👇 Tilni tanlang / Выберите язык / Choose your language"
+)
