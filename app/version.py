@@ -1,4 +1,4 @@
 """Loyiha versiyasi."""
 
-VERSION = "1.6.2"
+VERSION = "1.6.3"
 APP_NAME = "Oral Detect"
