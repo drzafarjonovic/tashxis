@@ -29,10 +29,14 @@ def main_keyboard(lang: str) -> ReplyKeyboardMarkup:
 
 def category_keyboard(lang: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=t("loc_tooth",  lang), callback_data="cat_tooth")],
-        [InlineKeyboardButton(text=t("loc_gum",    lang), callback_data="cat_periodontal")],
-        [InlineKeyboardButton(text=t("loc_mucosa", lang), callback_data="cat_mucosa")],
-        [InlineKeyboardButton(text=t("loc_jaw",    lang), callback_data="cat_jaw")],
+        [InlineKeyboardButton(text=t("loc_tooth",     lang), callback_data="cat_tooth")],
+        [InlineKeyboardButton(text=t("loc_gum",       lang), callback_data="cat_periodontal")],
+        [InlineKeyboardButton(text=t("loc_mucosa",    lang), callback_data="cat_mucosa")],
+        [InlineKeyboardButton(text=t("loc_jaw",       lang), callback_data="cat_jaw")],
+        [InlineKeyboardButton(text=t("loc_tmj",       lang), callback_data="cat_tmj")],
+        [InlineKeyboardButton(text=t("loc_trauma",    lang), callback_data="cat_trauma")],
+        [InlineKeyboardButton(text=t("loc_dentition", lang), callback_data="cat_dentition")],
+        [InlineKeyboardButton(text=t("loc_salivary",  lang), callback_data="cat_salivary")],
     ])
 
 

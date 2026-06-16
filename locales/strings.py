@@ -101,6 +101,26 @@ STRINGS = {
         "ru": "🦴 В челюсти или лице",
         "en": "🦴 In the jaw or face",
     },
+    "loc_tmj": {
+        "uz": "😬 Jag' bo'g'imi (chaynashda og'riq/shiqillash)",
+        "ru": "😬 Челюстной сустав (боль/щелчки при жевании)",
+        "en": "😬 Jaw joint (pain/clicking when chewing)",
+    },
+    "loc_trauma": {
+        "uz": "🤕 Jarohat (tish sindi, qimirladi, tushdi)",
+        "ru": "🤕 Травма (зуб сломан, подвижен, выбит)",
+        "en": "🤕 Injury (tooth broken, loose, knocked out)",
+    },
+    "loc_dentition": {
+        "uz": "🦷 Tish soni/shakli/joylashuvi yoki tishlash",
+        "ru": "🦷 Число/форма/положение зубов или прикус",
+        "en": "🦷 Tooth count/shape/position or bite",
+    },
+    "loc_salivary": {
+        "uz": "💧 So'lak bezi / og'iz qurishi / bez shishi",
+        "ru": "💧 Слюнная железа / сухость рта / припухлость",
+        "en": "💧 Salivary gland / dry mouth / gland swelling",
+    },
 
     # ── SAVOL / JAVOB ─────────────────────────────────────────────
     "yes_btn": {

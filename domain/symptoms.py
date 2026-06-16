@@ -406,6 +406,391 @@ QUESTIONS: Dict[str, Dict[str, str]] = {
         "ru": "Есть ли в этой области боль или жжение?",
         "en": "Is there pain or burning in this area?",
     },
+    # ════════════════════════════════════════════════════════════
+    #  PERIODONTAL — qo'shimcha
+    # ════════════════════════════════════════════════════════════
+    "root_exposure": {
+        "uz": "Tish ildizi yalang'ochlanib, sezgir bo'lib qolganmi (bo'yi uzun ko'rinadi)?",
+        "ru": "Обнажился ли корень зуба, стал ли он чувствительным (зуб «удлинился»)?",
+        "en": "Is the tooth root exposed and sensitive (tooth looks longer)?",
+    },
+    "gum_desquamation": {
+        "uz": "Milk yuzasi qizil, yaltiroq bo'lib po'st tashlayaptimi (yuza ko'chadi)?",
+        "ru": "Поверхность десны красная, блестящая и слущивается (отслаивается)?",
+        "en": "Is the gum surface red, shiny and peeling (sloughing)?",
+    },
+    "has_implant": {
+        "uz": "Muammo joyida implant (sun'iy tish ildizi) o'rnatilganmi?",
+        "ru": "В месте проблемы установлен имплант (искусственный корень)?",
+        "en": "Is there a dental implant placed at the problem site?",
+    },
+    "generalized": {
+        "uz": "Muammo og'izning ko'p qismida — deyarli barcha tishlar atrofida bormi?",
+        "ru": "Проблема охватывает большую часть рта — почти вокруг всех зубов?",
+        "en": "Does the problem affect most of the mouth — around almost all teeth?",
+    },
+    "furcation_defect": {
+        "uz": "Ko'p ildizli tish ildizlari orasida bo'shliq borligini shifokor aytganmi (furkatsiya)?",
+        "ru": "Говорил ли врач о дефекте между корнями многокорневого зуба (фуркация)?",
+        "en": "Has a dentist mentioned a defect between the roots of a multi-rooted tooth (furcation)?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  JAG' SUYAGI — qo'shimcha
+    # ════════════════════════════════════════════════════════════
+    "recent_extraction": {
+        "uz": "So'nggi kunlarda shu sohada tish oldirganmisiz (ekstraksiya)?",
+        "ru": "Удаляли ли вы зуб в этой области в последние дни (экстракция)?",
+        "en": "Did you have a tooth extracted in this area in the last few days?",
+    },
+    "empty_socket_pain": {
+        "uz": "Tish olingan katakcha bo'sh, kuchli og'riydi (3-4 kundan keyin kuchaydi)?",
+        "ru": "Лунка после удаления пустая и сильно болит (усилилась через 3-4 дня)?",
+        "en": "Is the extraction socket empty and severely painful (worsened after 3-4 days)?",
+    },
+    "slow_growth": {
+        "uz": "Shish/zichlik juda sekin, oylar davomida kattalashganmi?",
+        "ru": "Отёк/уплотнение растёт очень медленно, в течение месяцев?",
+        "en": "Has the swelling/mass grown very slowly, over months?",
+    },
+    "recurrence_history": {
+        "uz": "Bu o'simta/kista olib tashlangandan keyin yana qaytalanganmi?",
+        "ru": "Это образование/киста рецидивировало после удаления?",
+        "en": "Has this lesion/cyst recurred after being removed before?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  TMJ — chakka-pastki jag' bo'g'imi
+    # ════════════════════════════════════════════════════════════
+    "jaw_clicking": {
+        "uz": "Og'izni ochib-yopganda bo'g'imda shiqillash yoki qarsillash eshitiladimi?",
+        "ru": "При открывании/закрывании рта слышен щелчок или хруст в суставе?",
+        "en": "Is there a click or popping in the joint when opening/closing the mouth?",
+    },
+    "joint_pain": {
+        "uz": "Quloq oldidagi bo'g'im sohasida og'riq bormi (ayniqsa chaynaganda)?",
+        "ru": "Есть ли боль в области сустава перед ухом (особенно при жевании)?",
+        "en": "Is there pain in the joint area in front of the ear (especially when chewing)?",
+    },
+    "joint_crepitus": {
+        "uz": "Bo'g'imda qum g'ichirlashiga o'xshash ovoz (krepitatsiya) bormi?",
+        "ru": "Есть ли в суставе звук, похожий на скрип песка (крепитация)?",
+        "en": "Is there a grating, sand-like sound in the joint (crepitus)?",
+    },
+    "jaw_locking": {
+        "uz": "Jag' ba'zan qotib/qulflanib qoladimi (ocholmay yoki yopolmay)?",
+        "ru": "Челюсть иногда заклинивает (не открыть или не закрыть)?",
+        "en": "Does the jaw sometimes lock (cannot open or close)?",
+    },
+    "jaw_deviation": {
+        "uz": "Og'iz ochilganda jag' bir tomonga og'ib ketadimi?",
+        "ru": "При открывании рта челюсть смещается в сторону?",
+        "en": "Does the jaw shift to one side when opening the mouth?",
+    },
+    "cannot_open_progressive": {
+        "uz": "Og'iz ochilishi vaqt o'tishi bilan butunlay yopilib (qotib) qolganmi?",
+        "ru": "Открывание рта со временем полностью ограничилось (срослось)?",
+        "en": "Has mouth opening become permanently restricted (fused) over time?",
+    },
+    "morning_stiffness": {
+        "uz": "Ertalab jag'da qotishish yoki harakat qiyinligi bo'ladimi?",
+        "ru": "По утрам есть скованность или тугоподвижность челюсти?",
+        "en": "Is there morning stiffness or difficulty moving the jaw?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  TRAVMA
+    # ════════════════════════════════════════════════════════════
+    "recent_injury": {
+        "uz": "Yaqinda tish/jag'ga zarba yoki jarohat bo'ldimi (yiqilish, urilish)?",
+        "ru": "Была ли недавно травма зуба/челюсти (падение, удар)?",
+        "en": "Was there a recent injury to the tooth/jaw (fall, blow)?",
+    },
+    "tooth_fractured": {
+        "uz": "Tish sinib, bir bo'lagi uchib ketganmi?",
+        "ru": "Зуб сломался, откололся ли его кусок?",
+        "en": "Is the tooth fractured, with a piece broken off?",
+    },
+    "fracture_enamel_only": {
+        "uz": "Faqat kichik chekka (emal) uchgan, og'riq yo'q va dentin ochilmaganmi?",
+        "ru": "Откололся только маленький край (эмаль), без боли и без обнажения дентина?",
+        "en": "Did only a small edge (enamel) chip off, with no pain and no exposed dentin?",
+    },
+    "fracture_dentin": {
+        "uz": "Siniqda sarg'ish qatlam (dentin) ochilgan va sovuq/havoga sezgirmi?",
+        "ru": "В сколе обнажён желтоватый слой (дентин), чувствителен к холоду/воздуху?",
+        "en": "Is a yellowish layer (dentin) exposed in the fracture, sensitive to cold/air?",
+    },
+    "pulp_exposed_bleeding": {
+        "uz": "Siniqning o'rtasida qizil nuqta yoki qon ko'rinadimi (nerv ochilgan)?",
+        "ru": "В центре скола видна красная точка или кровь (обнажён нерв)?",
+        "en": "Is there a red dot or bleeding in the centre of the fracture (exposed pulp)?",
+    },
+    "tooth_displaced": {
+        "uz": "Tish o'rnidan siljiganmi — chiqib qolgan yoki yon tomonga og'ganmi?",
+        "ru": "Зуб сместился — выдвинулся или сдвинулся в сторону?",
+        "en": "Has the tooth been displaced — pushed out or shifted sideways?",
+    },
+    "tooth_intruded": {
+        "uz": "Tish ichkariga (suyak ichiga) kirib ketib, kaltaroq ko'rinadimi?",
+        "ru": "Зуб вдавился внутрь (в кость) и выглядит короче?",
+        "en": "Has the tooth been pushed inward (into the bone), looking shorter?",
+    },
+    "tooth_avulsed": {
+        "uz": "Tish butunlay o'rnidan chiqib (tushib) ketganmi?",
+        "ru": "Зуб полностью выбит (выпал) из лунки?",
+        "en": "Has the tooth been completely knocked out of its socket?",
+    },
+    "tooth_tender_after_injury": {
+        "uz": "Zarbadan keyin tish og'riydi, lekin qimirlamaydi va siljimaganmi?",
+        "ru": "После удара зуб болит, но не подвижен и не смещён?",
+        "en": "After the blow the tooth hurts but is not loose or displaced?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  TISH RIVOJLANISHI / ORTODONTIK ANOMALIYALAR
+    # ════════════════════════════════════════════════════════════
+    "teeth_missing_congenital": {
+        "uz": "Ba'zi tishlar tug'ilishdan umuman chiqmaganmi (yo'q)?",
+        "ru": "Некоторые зубы отсутствуют с рождения (не прорезались)?",
+        "en": "Are some teeth congenitally missing (never erupted)?",
+    },
+    "many_teeth_missing": {
+        "uz": "Yetishmayotgan tishlar ko'pmi (oltidan ortiq yoki deyarli barchasi)?",
+        "ru": "Отсутствует много зубов (более шести или почти все)?",
+        "en": "Are many teeth missing (more than six, or almost all)?",
+    },
+    "all_teeth_missing": {
+        "uz": "Tishlar umuman yo'qmi (to'liq tishsizlik, tug'ma)?",
+        "ru": "Зубы отсутствуют полностью (полная адентия, врождённая)?",
+        "en": "Are teeth completely absent (full congenital absence)?",
+    },
+    "extra_teeth": {
+        "uz": "Ortiqcha (qo'shimcha) tish/tishlar bormi?",
+        "ru": "Есть ли лишние (сверхкомплектные) зубы?",
+        "en": "Are there extra (supernumerary) teeth?",
+    },
+    "abnormal_tooth_shape": {
+        "uz": "Biror tish shakli g'ayritabiiy — juda katta, ikkita qo'shilib ketgan ko'rinishdami?",
+        "ru": "Есть ли зуб необычной формы — очень крупный или как два сросшихся?",
+        "en": "Is a tooth an abnormal shape — very large or looking like two fused together?",
+    },
+    "teeth_crowded": {
+        "uz": "Tishlar qiyshiq, zich joylashgan — ularga joy yetishmaydimi?",
+        "ru": "Зубы скучены, расположены тесно — им не хватает места?",
+        "en": "Are the teeth crowded/crooked — not enough room for them?",
+    },
+    "spacing_gaps": {
+        "uz": "Tishlar orasida bo'shliq (yoriqlar) bormi — old tishlar orasida ham?",
+        "ru": "Есть ли промежутки между зубами — в том числе между передними?",
+        "en": "Are there gaps between the teeth — including between the front teeth?",
+    },
+    "upper_teeth_protrude": {
+        "uz": "Yuqori old tishlar oldinga sezilarli chiqib turadimi?",
+        "ru": "Верхние передние зубы заметно выступают вперёд?",
+        "en": "Do the upper front teeth noticeably stick out forward?",
+    },
+    "lower_jaw_protrudes": {
+        "uz": "Pastki jag'/tishlar yuqori tishlardan oldinga chiqqanmi?",
+        "ru": "Нижняя челюсть/зубы выступают вперёд за верхние зубы?",
+        "en": "Does the lower jaw/teeth jut out ahead of the upper teeth?",
+    },
+    "front_teeth_no_contact": {
+        "uz": "Old tishlar yopilganda tegmaydi — orasida ochiq oraliq qoladimi (ochiq tishlash)?",
+        "ru": "Передние зубы не смыкаются — остаётся открытая щель (открытый прикус)?",
+        "en": "Do the front teeth not meet when closed — leaving an open gap (open bite)?",
+    },
+    "deep_overbite": {
+        "uz": "Yuqori old tishlar pastki tishlarni juda ko'p (deyarli to'liq) qoplaydimi?",
+        "ru": "Верхние передние зубы перекрывают нижние слишком сильно (почти полностью)?",
+        "en": "Do the upper front teeth overlap the lower ones excessively (deep bite)?",
+    },
+    "crossbite": {
+        "uz": "Tishlashda ba'zi pastki tishlar yuqori tishlardan tashqarida qoladimi (kesishgan tishlash)?",
+        "ru": "При смыкании некоторые нижние зубы оказываются снаружи верхних (перекрёстный прикус)?",
+        "en": "When biting, do some lower teeth sit outside the upper ones (crossbite)?",
+    },
+    "tooth_wrong_position": {
+        "uz": "Biror tish noto'g'ri joydan yoki noto'g'ri burchakda chiqqanmi?",
+        "ru": "Какой-то зуб прорезался не на своём месте или под неправильным углом?",
+        "en": "Has a tooth erupted in the wrong place or at the wrong angle?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  SO'LAK BEZLARI
+    # ════════════════════════════════════════════════════════════
+    "gland_swelling": {
+        "uz": "Quloq oldida yoki jag' ostida so'lak bezi shishi (do'mboq) bormi?",
+        "ru": "Есть ли припухлость слюнной железы перед ухом или под челюстью?",
+        "en": "Is there a salivary gland swelling in front of the ear or under the jaw?",
+    },
+    "swelling_with_meals": {
+        "uz": "Bez shishi ovqatdan oldin/paytida kattalashib, keyin kichrayadimi?",
+        "ru": "Припухлость железы увеличивается перед/во время еды, затем спадает?",
+        "en": "Does the gland swelling enlarge before/during meals, then subside?",
+    },
+    "gland_pain": {
+        "uz": "Bez sohasida og'riq va bosganda og'riydigan zichlik bormi?",
+        "ru": "Есть ли боль в области железы и болезненное уплотнение при надавливании?",
+        "en": "Is there pain in the gland area and tenderness on pressing?",
+    },
+    "pus_from_duct": {
+        "uz": "Bez yo'lidan (og'iz ichiga) yiring yoki bulutli so'lak chiqadimi?",
+        "ru": "Из протока железы (в рот) выделяется гной или мутная слюна?",
+        "en": "Does pus or cloudy saliva come from the gland duct (into the mouth)?",
+    },
+    "dry_eyes": {
+        "uz": "Og'iz bilan birga ko'zlar ham doimiy quruq bo'ladimi?",
+        "ru": "Вместе с сухостью рта есть ли постоянная сухость глаз?",
+        "en": "Along with dry mouth, are your eyes also persistently dry?",
+    },
+    "bluish_soft_swelling": {
+        "uz": "Lab ichida yoki og'iz tubida ko'kimtir, yumshoq, suvli pufak (kista) bormi?",
+        "ru": "Есть ли на губе или дне рта синеватый мягкий пузырь (киста)?",
+        "en": "Is there a bluish, soft, fluid-filled bump (cyst) on the lip or floor of mouth?",
+    },
+    "floor_of_mouth_swelling": {
+        "uz": "Til ostida katta, ko'kimtir, qurbaqa qorni kabi shish (ranula) bormi?",
+        "ru": "Под языком крупная синеватая припухлость, как у лягушки (ранула)?",
+        "en": "Is there a large bluish swelling under the tongue, like a frog's belly (ranula)?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  TIL KASALLIKLARI
+    # ════════════════════════════════════════════════════════════
+    "tongue_lesion": {
+        "uz": "Belgi/o'zgarish tilda joylashganmi?",
+        "ru": "Признак/изменение расположено на языке?",
+        "en": "Is the sign/change located on the tongue?",
+    },
+    "map_like_patches": {
+        "uz": "Tilda xarita kabi qizil-oq dog'lar bo'lib, ularning joyi vaqt o'tib o'zgaradimi?",
+        "ru": "На языке красно-белые пятна, как карта, меняющие расположение со временем?",
+        "en": "Are there map-like red-white patches on the tongue that change location over time?",
+    },
+    "hairy_coating": {
+        "uz": "Til usti tukli ko'rinishdagi qora yoki jigarrang qoplama bilan qoplanganmi?",
+        "ru": "Спинка языка покрыта «волосатым» чёрным или коричневым налётом?",
+        "en": "Is the tongue surface covered with a hairy black or brown coating?",
+    },
+    "smooth_red_patch_tongue": {
+        "uz": "Til o'rtasida (orqaroq) silliq, qizil, papillasiz romb/oval dog' bormi?",
+        "ru": "По средней линии языка гладкое красное ромбовидное пятно без сосочков?",
+        "en": "Is there a smooth, red, papilla-free rhomboid patch in the middle of the tongue?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  LAB KASALLIKLARI (XEYLIT)
+    # ════════════════════════════════════════════════════════════
+    "lip_lesion": {
+        "uz": "Belgi/o'zgarish lab(lar)da joylashganmi?",
+        "ru": "Признак/изменение расположено на губе(ах)?",
+        "en": "Is the sign/change located on the lip(s)?",
+    },
+    "lip_cracking_weather": {
+        "uz": "Sovuq, shamol yoki quruqlikdan lab(lar) yorilib, qaqrab qoladimi?",
+        "ru": "От холода, ветра или сухости губы трескаются и шелушатся?",
+        "en": "Do the lips crack and chap from cold, wind or dryness?",
+    },
+    "lip_persistent_scaling": {
+        "uz": "Lab doimiy po'st tashlaydi, qoraqo'ng'ir qatlamlar bilan qoplanadimi (uzoq davom etgan)?",
+        "ru": "Губа постоянно шелушится, покрывается чешуйками-корками (длительно)?",
+        "en": "Does the lip persistently peel and form scaly crusts (long-standing)?",
+    },
+    "lip_sun_damage": {
+        "uz": "Pastki lab uzoq quyosh ta'siridan qo'pol, quruq, oq-qizil dog'li bo'lib qolganmi?",
+        "ru": "Нижняя губа от долгого солнца стала шершавой, сухой, с бело-красными участками?",
+        "en": "Is the lower lip rough, dry and white-red from chronic sun exposure?",
+    },
+    "angular_cracks": {
+        "uz": "Lab burchaklarida yoriq, yara yoki achishuvchi qoq (zaeda) bormi?",
+        "ru": "В уголках губ есть трещины, ранки или мокнущие заеды?",
+        "en": "Are there cracks, sores or fissures at the corners of the mouth (angular)?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  INFEKSION (virusli / bakterial)
+    # ════════════════════════════════════════════════════════════
+    "grouped_vesicles": {
+        "uz": "Lab/burun atrofida guruh bo'lib turgan mayda pufakchalar (oldin achishib) toshdimi?",
+        "ru": "На губе/у носа высыпали сгруппированные мелкие пузырьки (с предшествующим жжением)?",
+        "en": "Did grouped small blisters erupt on the lip/around the nose (preceded by tingling)?",
+    },
+    "unilateral_rash": {
+        "uz": "Toshma yuzning faqat bitta tomonida, chiziq bo'ylab va kuchli og'riq bilan paydo bo'ldimi?",
+        "ru": "Сыпь появилась только на одной стороне лица, по ходу нерва, с сильной болью?",
+        "en": "Did the rash appear only on one side of the face, along a nerve line, with severe pain?",
+    },
+    "wart_like_growth": {
+        "uz": "Gulkaram yoki so'galsimon mayda, qattiqroq o'simta bormi?",
+        "ru": "Есть ли мелкое бородавчатое разрастание, похожее на цветную капусту?",
+        "en": "Is there a small wart-like or cauliflower-like growth?",
+    },
+    "hand_foot_rash": {
+        "uz": "Og'iz bilan birga qo'l va oyoqlarda ham toshma bor (ko'pincha bolada, isitma bilan)?",
+        "ru": "Вместе со ртом сыпь есть и на кистях и стопах (чаще у ребёнка, с лихорадкой)?",
+        "en": "Along with the mouth, is there a rash on hands and feet (often a child, with fever)?",
+    },
+    "painless_firm_ulcer": {
+        "uz": "Yara qattiq qirrali, og'riqsiz va o'z-o'zidan bitayotgandek ko'rinadimi (shankr)?",
+        "ru": "Язва с плотными краями, безболезненная и будто заживает сама (шанкр)?",
+        "en": "Is the ulcer firm-edged, painless and seemingly self-healing (chancre)?",
+    },
+    "chronic_nonhealing_ulcer": {
+        "uz": "Yara 3 haftadan ko'p bitmay, sekin kattalashib boryaptimi?",
+        "ru": "Язва не заживает более 3 недель и медленно увеличивается?",
+        "en": "Has the ulcer not healed for more than 3 weeks and is slowly enlarging?",
+    },
+    "woody_swelling": {
+        "uz": "Qattiq, yog'ochsimon shish bo'lib, undan ko'p fistula va sarg'ish donachalar chiqadimi?",
+        "ru": "Плотная деревянистая припухлость с множественными свищами и желтоватыми зёрнами?",
+        "en": "Is there a hard, woody swelling with multiple fistulas draining yellow granules?",
+    },
+
+    # ════════════════════════════════════════════════════════════
+    #  O'SMA / PREKANSEROZ
+    # ════════════════════════════════════════════════════════════
+    "soft_painless_lump": {
+        "uz": "Yumshoq, og'riqsiz, sekin o'sgan tugun/do'mboq bormi?",
+        "ru": "Есть ли мягкий, безболезненный, медленно растущий узел/шишка?",
+        "en": "Is there a soft, painless, slowly growing lump/nodule?",
+    },
+    "red_blue_blanching_lesion": {
+        "uz": "Qizil-ko'kimtir qon tomir o'simtasi bo'lib, bosganda rangi oqaradimi?",
+        "ru": "Есть ли красно-синюшное сосудистое образование, бледнеющее при надавливании?",
+        "en": "Is there a red-blue vascular lesion that blanches (pales) when pressed?",
+    },
+    "red_velvety_patch": {
+        "uz": "Artilmaydigan qizil, baxmaldek silliq dog' bormi?",
+        "ru": "Есть ли несоскабливаемое красное бархатистое гладкое пятно?",
+        "en": "Is there a non-scrapable red, velvety smooth patch?",
+    },
+    "progressive_trismus_fibrosis": {
+        "uz": "Og'iz ochilishi asta-sekin qiyinlashib, shilliq qavat oqarib qotganmi (betel/nos iste'moli)?",
+        "ru": "Открывание рта постепенно ограничилось, слизистая побледнела и уплотнилась (бетель/нас)?",
+        "en": "Has mouth opening gradually become limited with pale, stiff mucosa (betel/areca use)?",
+    },
+    "indurated_lesion": {
+        "uz": "O'simta yoki yara qattiq, o'rnashgan (asosida zich) va atrofga yopishganmi?",
+        "ru": "Образование/язва плотное, фиксированное (с уплотнением в основании), спаяно с тканями?",
+        "en": "Is the lesion/ulcer hard, fixed (indurated base) and attached to surrounding tissue?",
+    },
+    "easy_bleeding_growth": {
+        "uz": "O'simta arzimas teginishdan ham oson qonaydimi?",
+        "ru": "Образование легко кровоточит даже при незначительном касании?",
+        "en": "Does the growth bleed easily even with slight contact?",
+    },
+    "numbness": {
+        "uz": "Shu sohada uvishish yoki sezuvchanlik yo'qolishi (karaxtlik) bormi?",
+        "ru": "Есть ли в этой области онемение или потеря чувствительности?",
+        "en": "Is there numbness or loss of sensation in this area?",
+    },
+    "tobacco_risk": {
+        "uz": "Tamaki, nos yoki betel/nasvoy iste'mol qilasizmi (yoki ko'p chekasizmi)?",
+        "ru": "Употребляете ли табак, нас или бетель (или много курите)?",
+        "en": "Do you use tobacco, snus or betel/areca (or smoke heavily)?",
+    },
+
     # ── JAG' ─────────────────────────────────────────────────────
     "jaw_swelling": {
         "uz": "Jag' atrofida yoki yuzda ko'rinib turuvchi shish bormi?",
@@ -589,6 +974,12 @@ CANDIDATE_SYMPTOMS: Dict[str, List[str]] = {
         "general_weakness",
         "pressure_pain",
         "spontaneous_pain",
+        "root_exposure",
+        "gum_desquamation",
+        "has_implant",
+        "generalized",
+        "furcation_defect",
+        "bilateral",
     ],
     "mucosa": [
         "ulcer",
@@ -617,6 +1008,35 @@ CANDIDATE_SYMPTOMS: Dict[str, List[str]] = {
         "no_pain",
         "general_weakness",
         "bad_smell",
+        # til kasalliklari
+        "tongue_lesion",
+        "map_like_patches",
+        "hairy_coating",
+        "smooth_red_patch_tongue",
+        # lab kasalliklari (xeylit)
+        "lip_lesion",
+        "lip_cracking_weather",
+        "lip_persistent_scaling",
+        "lip_sun_damage",
+        "angular_cracks",
+        # infeksion
+        "grouped_vesicles",
+        "unilateral_rash",
+        "wart_like_growth",
+        "hand_foot_rash",
+        "painless_firm_ulcer",
+        "chronic_nonhealing_ulcer",
+        "woody_swelling",
+        # o'sma / prekanseroz
+        "soft_painless_lump",
+        "red_blue_blanching_lesion",
+        "red_velvety_patch",
+        "progressive_trismus_fibrosis",
+        "indurated_lesion",
+        "easy_bleeding_growth",
+        "numbness",
+        "tobacco_risk",
+        "slow_growth",
     ],
     "jaw": [
         "jaw_swelling",
@@ -636,6 +1056,78 @@ CANDIDATE_SYMPTOMS: Dict[str, List[str]] = {
         "spontaneous_pain",
         "dull_ache",
         "pressure_sensation",
+        "recent_extraction",
+        "empty_socket_pain",
+        "slow_growth",
+        "recurrence_history",
+        "bad_smell",
+    ],
+    "tmj": [
+        "jaw_clicking",
+        "joint_pain",
+        "joint_crepitus",
+        "jaw_locking",
+        "jaw_deviation",
+        "cannot_open_progressive",
+        "morning_stiffness",
+        "trismus",
+        "irradiation",
+        "bruxism",
+        "recent_injury",
+        "severe_pain",
+        "fever",
+    ],
+    "trauma": [
+        "recent_injury",
+        "tooth_fractured",
+        "fracture_enamel_only",
+        "fracture_dentin",
+        "pulp_exposed_bleeding",
+        "tooth_displaced",
+        "tooth_intruded",
+        "tooth_avulsed",
+        "tooth_tender_after_injury",
+        "tooth_mobility",
+        "cold_sensitivity",
+        "gum_bleeding",
+        "no_pain",
+        "tooth_discoloration",
+    ],
+    "dentition": [
+        "teeth_missing_congenital",
+        "many_teeth_missing",
+        "all_teeth_missing",
+        "extra_teeth",
+        "abnormal_tooth_shape",
+        "teeth_crowded",
+        "spacing_gaps",
+        "upper_teeth_protrude",
+        "lower_jaw_protrudes",
+        "front_teeth_no_contact",
+        "deep_overbite",
+        "crossbite",
+        "tooth_wrong_position",
+        "retained_tooth",
+        "family_history",
+        "since_childhood",
+        "no_pain",
+    ],
+    "salivary": [
+        "gland_swelling",
+        "swelling_with_meals",
+        "gland_pain",
+        "pus_from_duct",
+        "dry_mouth",
+        "dry_eyes",
+        "bluish_soft_swelling",
+        "floor_of_mouth_swelling",
+        "fever",
+        "lymph_nodes",
+        "slow_growth",
+        "soft_painless_lump",
+        "indurated_lesion",
+        "numbness",
+        "bad_smell",
     ],
 }
 

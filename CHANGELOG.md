@@ -1,5 +1,60 @@
 # Changelog
 
+## [1.3.0] - 2026-06
+
+### To'liq tibbiy taksonomiya (qolgan barcha kategoriyalar)
+13 toifa bo'yicha kasalliklar bazasi yakunlandi. Jami kasalliklar **47 → 121**,
+savollar **88 → 157**, diagnostik guruhlar **4 → 8**.
+
+- **3-kategoriya — Periapikal:** granullovchi va granulomatoz surunkali
+  periodontit qo'shildi (o'tkir/fibroz, granuloma, radikulyar kista, abscess bilan).
+- **4-kategoriya — Parodont (13):** deskvamativ gingivit, lokal va
+  generalizatsiyalashgan parodontit (avvalgi "surunkali" o'rniga), periimplantit,
+  gingival retsessiya, furkatsion shikastlanish qo'shildi.
+- **5/6/12-kategoriya — Shilliq qavat (31):** yarali stomatit; til kasalliklari
+  (geografik, qora tukli, rombsimon glossit, glossit); xeylitlar (meteorologik,
+  eksfoliativ, aktinik, angular); infeksion (gerpes simplex, herpes zoster, HPV
+  papilloma, qo'l-oyoq-og'iz, sifilis, sil, aktinomikoz); prekanseroz (eritroplakiya,
+  submukoz fibroz); o'smalar (fibroma, gemangioma, lipoma) va yomon sifatli
+  (yassi hujayrali karsinoma, til/lab saratoni) qo'shildi.
+- **7-kategoriya — Jag' suyagi:** osteit, alveolit (quruq katakcha), odontogen
+  keratokista qo'shildi.
+- **8-kategoriya — TMJ (yangi):** disfunksiya, artrit, artroz, disk dislokatsiyasi, ankiloz.
+- **9/10-kategoriya — Rivojlanish + ortodontik (yangi, 19):** adentiya/gipo/oligo/
+  giperodontiya, geminatsiya/fuziya/konkressensiya/taurodontizm, distopiya/retensiya/
+  ektopik chiqish, distal/mezial okklyuziya, chuqur/ochiq tishlash, kross-bayt,
+  skuchennost, diastema, tremalar.
+- **11-kategoriya — Travma (yangi, 9):** emal / emal-dentin / pulpa ochilishi /
+  ildiz sinishi, konkussiya, subluksatsiya, ekstruziya, intruziya, avulsiya.
+- **13-kategoriya — So'lak bezlari (yangi, 7):** sialadenit, sialolitiaz,
+  kserostomiya, Sjögren sindromi, mukosele, ranula, so'lak bezi o'smasi.
+
+### Engine va UI
+- **4 ta yangi triage tugmasi:** Jag' bo'g'imi (TMJ), Jarohat (travma),
+  Tish soni/shakli/tishlash (rivojlanish/ortodontik), So'lak bezlari.
+- **Favqulodda aniqlash kengaytirildi:** o'tkir osteomiyelitga o'xshash holat
+  (yuqori isitma + kuchli og'riq + trizm) va yiringli sialadenit (yuqori isitma +
+  bez shishi) ham aniqlanadi.
+- `MAX_QUESTIONS` 12 → 14 (katta shilliq qavat guruhida noyob kasalliklarni
+  ajratish uchun; erta to'xtash aksariyat sessiyani baribir 4-6 savolda tugatadi).
+
+### Tuzatishlar
+- Qolgan barcha "o'lik" simptom kalitlari tozalandi: `root_exposure`,
+  `no_periodontal_pocket`, `diffuse_swelling`, `acute_pain`, `no_fever` —
+  endi `KNOWN_MISSING` bo'sh.
+
+### Validatsiya
+- 121/121 kasallik o'z belgilaridan to'g'ri yetib boriladi (rentgensiz klinik
+  jihatdan ajralmas egizaklar — masalan geminatsiya/fuziya — sinonim guruh
+  sifatida hisobga olingan). 71 ta engine test holati va registr/favqulodda
+  testlari muvaffaqiyatli.
+
+### Eslatma
+- Sandbox internetsiz bo'lgani uchun `ctoma.ru` ochib bo'lmadi; tibbiy ma'lumot
+  ochiq stomatologiya manbalari tuzilishiga mos ravishda tayyorlandi.
+- Ba'zi holatlar (shakl anomaliyalari, ba'zi periapikal/oraliq holatlar) aniq
+  farqlash uchun rentgen talab qiladi — bot ularni muqobil variant sifatida ko'rsatadi.
+
 ## [1.2.0] - 2026-06
 
 ### Tibbiy baza kengaytirildi (1 va 2-kategoriya — namuna bosqichi)

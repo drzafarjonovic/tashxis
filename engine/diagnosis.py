@@ -13,7 +13,7 @@ from medical import DIAGNOSTIC_GROUPS
 
 # Savollar soni chegaralari
 MIN_QUESTIONS = 4
-MAX_QUESTIONS = 12
+MAX_QUESTIONS = 14
 
 # Erta to'xtatish: yetakchi kasallik aniq ustun bo'lsa
 EARLY_STOP_CONFIDENCE = 0.82      # yetakchi ehtimol shu darajadan yuqori

@@ -187,7 +187,6 @@ enamel_hypoplasia = Disease(
     },
     optional_features={
         "multiple_teeth_affected": True,
-        "brown_stains": True,
         "no_pain": True,
     },
     negative_features={
@@ -793,9 +792,68 @@ chronic_apical_periodontitis_fibrous = Disease(
     ],
 )
 
+chronic_apical_periodontitis_granulating = Disease(
+    id="chronic_apical_periodontitis_granulating",
+    name_uz="Surunkali granullovchi periodontit",
+    name_ru="Хронический гранулирующий периодонтит",
+    name_en="Chronic granulating periodontitis",
+    category="periapical",
+    core_features={
+        "tooth_discoloration": True,
+        "fistula": True,
+    },
+    optional_features={
+        "dull_ache": True,
+        "no_pain": True,
+        "bad_smell": True,
+    },
+    negative_features={
+        "spontaneous_pain": True,
+        "percussion_pain": True,
+        "night_pain": True,
+    },
+    discriminators=[
+        "ko'pincha fistula (yiring chiqaruvchi kanal)",
+        "davriy bo'g'iq og'riq",
+        "devital tish, faol periapikal jarayon",
+    ],
+    red_flags=[
+        "o'tkirlashuvi (abscess)",
+    ],
+)
+
+chronic_apical_periodontitis_granulomatous = Disease(
+    id="chronic_apical_periodontitis_granulomatous",
+    name_uz="Surunkali granulomatoz periodontit",
+    name_ru="Хронический гранулематозный периодонтит",
+    name_en="Chronic granulomatous periodontitis",
+    category="periapical",
+    core_features={
+        "no_pain": True,
+        "tooth_discoloration": True,
+        "pressure_sensation": True,
+    },
+    optional_features={
+        "dull_ache": True,
+    },
+    negative_features={
+        "spontaneous_pain": True,
+        "percussion_pain": True,
+        "fistula": True,
+    },
+    discriminators=[
+        "apeksda granuloma shakllanishi",
+        "deyarli simptomsiz, devital tish",
+        "rentgenda aniq chegaralangan o'choq",
+    ],
+    red_flags=[
+        "kista yoki abscessga aylanish",
+    ],
+)
+
 periapical_granuloma = Disease(
     id="periapical_granuloma",
-    name_uz="Periapikal granuloma",
+    name_uz="Periapikal granuloma (apikal granuloma)",
     name_ru="Периапикальная гранулёма",
     name_en="Periapical granuloma",
     category="periapical",
@@ -926,6 +984,8 @@ PULP_DISEASES = [
 PERIAPICAL_DISEASES = [
     acute_apical_periodontitis,
     chronic_apical_periodontitis_fibrous,
+    chronic_apical_periodontitis_granulating,
+    chronic_apical_periodontitis_granulomatous,
     periapical_granuloma,
     periapical_abscess,
     radicular_cyst,
