@@ -49,6 +49,17 @@ async def main() -> None:
     runner = await start_web()
     await init_db()
 
+    # Self-Learning: DB'dagi o'rganilgan prior overrides'ni yuklash (bo'lsa)
+    try:
+        from db.repository import load_learned_priors
+        from engine import priors as _priors
+        learned = await load_learned_priors()
+        if learned:
+            _priors.LEARNED_PRIOR_OVERRIDES.update(learned)
+            logger.info("O'rganilgan prior overrides yuklandi: %d ta kasallik.", len(learned))
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Prior overrides yuklash o'tkazib yuborildi: %s", exc)
+
     bot = Bot(
         token=settings.bot_token,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML),

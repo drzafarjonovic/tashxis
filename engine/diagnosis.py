@@ -1,5 +1,8 @@
 """
 Tashxis orkestratori — savol oqimini boshqaradi va yakuniy natijani tuzadi.
+
+V2.0: demografik kontekst (yosh/jins) va anatomik joylashuv Bayes yadrosiga
+uzatiladi; yakuniy ishonch Confidence Calibration Engine orqali o'tkaziladi.
 """
 
 from __future__ import annotations
@@ -7,6 +10,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional
 
 from engine.advice import build_explanation
+from engine.calibration import calibrate_confidence
 from engine.scoring import posterior
 from engine.selector import next_question as _next_question
 from medical import DIAGNOSTIC_GROUPS
@@ -30,16 +34,20 @@ def get_next_question(
     category: str,
     observations: Dict[str, bool],
     asked: List[str],
+    demo: Optional[object] = None,
+    location: Optional[Dict[str, str]] = None,
 ) -> Optional[str]:
     """Keyingi eng informativ savol id'si (yoki None)."""
     diseases = DIAGNOSTIC_GROUPS.get(category, [])
-    return _next_question(category, observations, asked, diseases)
+    return _next_question(category, observations, asked, diseases, demo, location)
 
 
 def should_stop(
     category: str,
     observations: Dict[str, bool],
     asked_count: int,
+    demo: Optional[object] = None,
+    location: Optional[Dict[str, str]] = None,
 ) -> bool:
     """Erta to'xtatish kerakmi — yetakchi kasallik yetarlicha aniqmi."""
     if asked_count < MIN_QUESTIONS:
@@ -51,7 +59,7 @@ def should_stop(
     if len(diseases) < 2:
         return True
 
-    ranked = posterior(diseases, observations)
+    ranked = posterior(diseases, observations, demo, location)
     if len(ranked) < 2:
         return True
 
@@ -64,13 +72,16 @@ def diagnose(
     category: str,
     observations: Dict[str, bool],
     lang: str = "uz",
+    demo: Optional[object] = None,
+    location: Optional[Dict[str, str]] = None,
 ) -> Dict:
     """
     Yakuniy tashxis natijasini qaytaradi.
 
     Qaytariladigan dict:
-      diagnosis, disease_id, confidence (0..1), uncertain (bool),
-      alternatives (list[str]), red_flags, discriminators, explanation, category
+      diagnosis, disease_id, confidence (0..1, kalibrlangan), uncertain (bool),
+      alternatives, red_flags, discriminators, explanation, category,
+      description, symptoms_text, differential, treatment
     """
     diseases = DIAGNOSTIC_GROUPS.get(category, [])
     if not diseases:
@@ -84,12 +95,18 @@ def diagnose(
             "discriminators": [],
             "explanation": "",
             "category": category,
+            "description": "",
+            "symptoms_text": "",
+            "differential": "",
+            "treatment": "",
         }
 
-    ranked = posterior(diseases, observations)
+    ranked = posterior(diseases, observations, demo, location)
     top_disease, top_prob = ranked[0]
 
-    uncertain = top_prob < UNCERTAIN_CONFIDENCE
+    # Confidence Calibration Engine (hozircha identity — ma'lumot kelganda fit qilinadi)
+    confidence = calibrate_confidence(top_prob)
+    uncertain = confidence < UNCERTAIN_CONFIDENCE
 
     alternatives = [
         d.get_name(lang)
@@ -100,7 +117,7 @@ def diagnose(
     return {
         "diagnosis": top_disease.get_name(lang),
         "disease_id": top_disease.id,
-        "confidence": round(top_prob, 2),
+        "confidence": round(confidence, 2),
         "uncertain": uncertain,
         "alternatives": alternatives,
         "red_flags": top_disease.red_flags,

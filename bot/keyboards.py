@@ -70,6 +70,32 @@ def localization_keyboard(step: str, lang: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
+def demo_age_keyboard(lang: str) -> InlineKeyboardMarkup:
+    rows = [
+        [
+            InlineKeyboardButton(text="5–12", callback_data="dg_age_5-12"),
+            InlineKeyboardButton(text="13–18", callback_data="dg_age_13-18"),
+        ],
+        [
+            InlineKeyboardButton(text="19–40", callback_data="dg_age_19-40"),
+            InlineKeyboardButton(text="41–65", callback_data="dg_age_41-65"),
+        ],
+        [InlineKeyboardButton(text="65+", callback_data="dg_age_65+")],
+        [InlineKeyboardButton(text=t("demo_skip", lang), callback_data="dg_age_skip")],
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def demo_sex_keyboard(lang: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=t("demo_sex_male", lang), callback_data="dg_sex_male"),
+            InlineKeyboardButton(text=t("demo_sex_female", lang), callback_data="dg_sex_female"),
+        ],
+        [InlineKeyboardButton(text=t("demo_skip", lang), callback_data="dg_sex_skip")],
+    ])
+
+
 def yes_no_keyboard(lang: str, question_id: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [

@@ -34,6 +34,14 @@ class Disease:
     differential: Dict[str, str] = field(default_factory=dict)
     treatment: Dict[str, str] = field(default_factory=dict)
 
+    # ── V2.0: epidemiologik prior va anatomik joylashuv ──────────
+    # prevalence: tarqalganlik darajasi (bazaviy prior tier'i)
+    #   "very_common" | "common" | "uncommon" | "rare" | "very_rare"
+    prevalence: str = "uncommon"
+    # location_profile: anatomik joylashuvga bog'liq nisbiy ehtimol (P(L|D))
+    #   masalan {"lower": 1.4, "molar": 1.8} — neytral qiymat 1.0
+    location_profile: Dict[str, float] = field(default_factory=dict)
+
     def get_name(self, lang: str) -> str:
         if lang == "ru":
             return self.name_ru

@@ -321,8 +321,7 @@ distal_occlusion = Disease(
         "upper_teeth_protrude": True,
     },
     optional_features={
-        "deep_overbite": True,
-        "since_childhood": True,
+        "upper_teeth_protrude": True,
     },
     negative_features={
         "lower_jaw_protrudes": True,
@@ -369,7 +368,7 @@ deep_bite = Disease(
         "deep_overbite": True,
     },
     optional_features={
-        "upper_teeth_protrude": True,
+        "since_childhood": True,
     },
     negative_features={
         "front_teeth_no_contact": True,

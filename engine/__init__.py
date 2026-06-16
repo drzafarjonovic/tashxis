@@ -1,5 +1,6 @@
 """Tashxis dvigateli — ommaviy API."""
 
+from engine.demographics import DemographicContext
 from engine.diagnosis import (
     MAX_QUESTIONS,
     MIN_QUESTIONS,
@@ -17,4 +18,5 @@ __all__ = [
     "should_stop",
     "CATEGORY_MAP",
     "is_emergency",
+    "DemographicContext",
 ]
