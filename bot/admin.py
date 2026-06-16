@@ -29,6 +29,7 @@ from aiogram.types import (
 from app.config import settings
 from bot.states import AdminFSM
 from db import reports
+from db.database import diagnose as db_diagnose
 from db.database import is_enabled as db_enabled
 from reporting import exporters
 
@@ -52,6 +53,16 @@ def _admin_menu() -> InlineKeyboardMarkup:
         [InlineKeyboardButton(text="👤 Obunachi bo'yicha hisobot", callback_data="adr_user")],
         [InlineKeyboardButton(text="👥 Obunachilar ro'yxati (Excel)", callback_data="adr_users")],
     ])
+
+
+@admin_router.message(Command("dbtest"))
+async def cmd_dbtest(message: Message, state: FSMContext):
+    """Admin diagnostikasi: jonli DB ulanishini sinaydi va aniq xatoni ko'rsatadi."""
+    if not _is_admin(message.from_user.id):
+        return
+    await message.answer("⏳ Ma'lumotlar bazasi tekshirilmoqda...")
+    result = await db_diagnose()
+    await message.answer(f"🗄 <b>DB test natijasi:</b>\n\n{result}")
 
 
 @admin_router.message(Command("admin"))

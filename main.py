@@ -50,6 +50,7 @@ async def set_commands(bot: Bot) -> None:
             await bot.set_my_commands(
                 [
                     BotCommand(command="admin", description="Admin paneli — hisobotlar"),
+                    BotCommand(command="dbtest", description="DB ulanishini tekshirish"),
                     BotCommand(command="reply", description="Foydalanuvchiga javob: /reply <id> matn"),
                     BotCommand(command="myid", description="Mening ID im"),
                     BotCommand(command="start", description="Boshlash"),

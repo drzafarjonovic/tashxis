@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.3] - 2026-06 — DB diagnostikasi (/dbtest) va mustahkam ulanish
+
+- Yangi **`/dbtest`** admin buyrug'i: jonli ulanishni sinaydi va **aniq xato
+  matnini** to'g'ridan-to'g'ri Telegram'da ko'rsatadi (Railway loglarisiz tashxis).
+- `init_db` da ulanish va sxema ajratildi: sxema xatosi endi DB'ni o'chirmaydi
+  (jadvallar mavjud bo'lsa hisobotlar ishlaydi).
+- Sxema bayonotlari bittalab qo'llanadi (Supabase pooler uchun xavfsizroq).
+
 ## [1.7.2] - 2026-06 — /admin va DB diagnostikasi
 
 - `/admin` endi jim qolmaydi: admin emas yoki ADMIN_ID sozlanmagan bo'lsa aniq

@@ -3,7 +3,7 @@ Supabase Postgres ulanishi (asyncpg).
 
 Dizayn tamoyili: DB ixtiyoriy. DATABASE_URL bo'sh bo'lsa yoki ulanish
 muvaffaqiyatsiz bo'lsa, bot baribir to'liq ishlaydi (graceful degradation).
-asyncpg faqat init_db() ichida import qilinadi — shu sabab modulni
+asyncpg faqat funksiyalar ichida import qilinadi — shu sabab modulni
 asyncpg o'rnatilmagan muhitda ham import qilish mumkin.
 """
 
@@ -31,6 +31,15 @@ def is_enabled() -> bool:
     return _pool is not None
 
 
+def _ssl_context():
+    """Supabase uchun SSL konteksti (sertifikat tekshiruvisiz)."""
+    import ssl as _ssl
+    ctx = _ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = _ssl.CERT_NONE
+    return ctx
+
+
 async def init_db() -> None:
     """Ulanish pulini yaratadi va sxemani qo'llaydi. Xatoda bot DB'siz davom etadi."""
     global _pool
@@ -45,41 +54,87 @@ async def init_db() -> None:
         logger.warning("asyncpg o'rnatilmagan — DB o'chirildi.")
         return
 
-    # Supabase SSL talab qiladi. Sertifikat tekshiruvisiz shifrlangan ulanish
-    # (pooler/host nomi mosligi muammolarini oldini oladi).
-    import ssl as _ssl
-    ssl_ctx = _ssl.create_default_context()
-    ssl_ctx.check_hostname = False
-    ssl_ctx.verify_mode = _ssl.CERT_NONE
-
+    # 1-bosqich: ulanish
     try:
         _pool = await asyncpg.create_pool(
             dsn=settings.database_url,
             min_size=1,
             max_size=5,
             command_timeout=15,
-            timeout=20,                 # ulanish kutish vaqti
-            ssl=ssl_ctx,                # Supabase uchun SSL
-            statement_cache_size=0,     # Supabase pooler (transaction mode) mosligi
+            timeout=20,
+            ssl=_ssl_context(),
+            statement_cache_size=0,   # Supabase pooler (transaction mode) mosligi
         )
-        await _ensure_schema()
-        logger.info("Supabase Postgres ulanishi tayyor.")
     except Exception as exc:  # noqa: BLE001
         logger.error(
-            "DB ulanishi muvaffaqiyatsiz (%s: %s) — bot DB'siz davom etadi. "
+            "DB ULANISHI muvaffaqiyatsiz (%s: %s) — bot DB'siz davom etadi. "
             "Eslatma: Railway IPv6'ni qo'llamaydi — Supabase 'Connection Pooler' "
-            "(IPv4) URL'ini ishlating.",
+            "(IPv4, aws-0-...pooler.supabase.com:6543) URL'ini ishlating.",
             type(exc).__name__, exc,
         )
         _pool = None
+        return
+
+    # 2-bosqich: sxema (alohida — ulanish saqlanib qoladi, sxema xatosi DB'ni o'chirmaydi)
+    try:
+        await _ensure_schema()
+        logger.info("Supabase Postgres ulanishi tayyor (sxema qo'llandi).")
+    except Exception as exc:  # noqa: BLE001
+        logger.error(
+            "DB ulandi, ammo SXEMA qo'llashda xato (%s: %s). Jadvallar mavjud bo'lsa "
+            "hisobotlar baribir ishlaydi.",
+            type(exc).__name__, exc,
+        )
 
 
 async def _ensure_schema() -> None:
+    """Sxemani bayonotlarga bo'lib, har birini alohida qo'llaydi (pooler-xavfsiz)."""
     if _pool is None:
         return
     schema_sql = _SCHEMA_PATH.read_text(encoding="utf-8")
+    statements = [s.strip() for s in schema_sql.split(";") if s.strip()]
     async with _pool.acquire() as conn:
-        await conn.execute(schema_sql)
+        for stmt in statements:
+            try:
+                await conn.execute(stmt)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("Sxema bayonoti o'tkazib yuborildi (%s): %.60s",
+                               type(exc).__name__, stmt.replace("\n", " "))
+
+
+async def diagnose() -> str:
+    """Jonli ulanishni sinaydi va aniq natija/xatoni matn sifatida qaytaradi."""
+    if not settings.db_enabled:
+        return "DATABASE_URL berilmagan."
+    try:
+        import asyncpg
+    except ImportError:
+        return "asyncpg o'rnatilmagan."
+
+    if _pool is not None:
+        try:
+            val = await _pool.fetchval("SELECT 1")
+            return f"✅ DB ulangan va ishlayapti (SELECT 1 = {val})."
+        except Exception as exc:  # noqa: BLE001
+            return f"⚠️ Pool mavjud, lekin so'rov xato berdi:\n{type(exc).__name__}: {exc}"
+
+    # Pool yo'q — yangi ulanish sinab, aniq xatoni qaytaramiz
+    try:
+        conn = await asyncpg.connect(
+            dsn=settings.database_url,
+            timeout=20,
+            ssl=_ssl_context(),
+            statement_cache_size=0,
+        )
+        val = await conn.fetchval("SELECT 1")
+        await conn.close()
+        return f"✅ Yangi ulanish muvaffaqiyatli (SELECT 1 = {val}). Botni qayta deploy qiling."
+    except Exception as exc:  # noqa: BLE001
+        return (
+            f"❌ Ulanib bo'lmadi:\n<b>{type(exc).__name__}</b>: {exc}\n\n"
+            "Tekshiring: pooler URL (aws-0-...pooler.supabase.com:6543), "
+            "user `postgres.<ref>`, parol to'g'riligi."
+        )
 
 
 async def close_db() -> None:
