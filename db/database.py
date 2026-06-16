@@ -45,17 +45,32 @@ async def init_db() -> None:
         logger.warning("asyncpg o'rnatilmagan — DB o'chirildi.")
         return
 
+    # Supabase SSL talab qiladi. Sertifikat tekshiruvisiz shifrlangan ulanish
+    # (pooler/host nomi mosligi muammolarini oldini oladi).
+    import ssl as _ssl
+    ssl_ctx = _ssl.create_default_context()
+    ssl_ctx.check_hostname = False
+    ssl_ctx.verify_mode = _ssl.CERT_NONE
+
     try:
         _pool = await asyncpg.create_pool(
             dsn=settings.database_url,
             min_size=1,
             max_size=5,
-            command_timeout=10,
+            command_timeout=15,
+            timeout=20,                 # ulanish kutish vaqti
+            ssl=ssl_ctx,                # Supabase uchun SSL
+            statement_cache_size=0,     # Supabase pooler (transaction mode) mosligi
         )
         await _ensure_schema()
         logger.info("Supabase Postgres ulanishi tayyor.")
     except Exception as exc:  # noqa: BLE001
-        logger.error("DB ulanishi muvaffaqiyatsiz (%s) — bot DB'siz davom etadi.", exc)
+        logger.error(
+            "DB ulanishi muvaffaqiyatsiz (%s: %s) — bot DB'siz davom etadi. "
+            "Eslatma: Railway IPv6'ni qo'llamaydi — Supabase 'Connection Pooler' "
+            "(IPv4) URL'ini ishlating.",
+            type(exc).__name__, exc,
+        )
         _pool = None
 
 

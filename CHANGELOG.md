@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1] - 2026-06 — DB ulanishini mustahkamlash (Supabase/Railway)
+
+- `asyncpg` ulanishiga **SSL** (Supabase talabi), **`statement_cache_size=0`**
+  (Supabase pooler transaction-mode mosligi) va ulanish **timeout** qo'shildi.
+- Ulanish xatosi loglari aniqroq: xato turi/matni + Railway IPv6 eslatmasi.
+- `.env.example`: Railway uchun **Connection Pooler (IPv4)** URL'ini ishlatish
+  bo'yicha ko'rsatma (direct `db.xxx.supabase.co` IPv6-only — Railway'da ishlamaydi).
+
 ## [1.7.0] - 2026-06 — Admin audit va hisobotlar
 
 ### Yangi: Admin paneli (`/admin`, faqat ADMIN_ID egasi uchun)
