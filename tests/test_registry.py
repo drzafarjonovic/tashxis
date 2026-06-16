@@ -12,14 +12,9 @@ from medical import ALL_DISEASES
 # Hozircha registrda yo'q, ammo kasalliklarda uchraydigan kalitlar.
 # Bular kasalliklarni qayta tuzish bosqichida tozalanadi/qo'shiladi.
 # Yangi qarz qo'shilsa, bu test xato beradi.
-KNOWN_MISSING = {
-    "acute_pain",
-    "diffuse_swelling",
-    "hot_pain",
-    "no_fever",
-    "no_periodontal_pocket",
-    "root_exposure",
-}
+# Barcha simptom kalitlari endi registrda mavjud — qarz qolmadi.
+# Agar kelajakda kasallik registrda yo'q kalitdan foydalansa, test xato beradi.
+KNOWN_MISSING: set[str] = set()
 
 
 def _collect_unknown_keys() -> set[str]:

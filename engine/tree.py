@@ -18,6 +18,10 @@ CATEGORY_MAP: Dict[str, str] = {
     "cat_periodontal": "periodontal",
     "cat_mucosa": "mucosa",
     "cat_jaw": "jaw",
+    "cat_tmj": "tmj",
+    "cat_trauma": "trauma",
+    "cat_dentition": "dentition",
+    "cat_salivary": "salivary",
 }
 
 
@@ -26,7 +30,9 @@ def is_emergency(observations: Dict[str, bool]) -> bool:
     Xavfli (shoshilinch) holat: yiringli/tarqalgan jarayonga shubha.
 
       - yuqori isitma + jag'/yuz shishi, yoki
-      - isitma + trizm + jag' shishi
+      - isitma + trizm + jag' shishi, yoki
+      - yuqori isitma + kuchli og'riq + trizm (o'tkir osteomiyelit), yoki
+      - yuqori isitma + so'lak bezi shishi (yiringli sialadenit/abscess)
     """
     high_fever_swelling = observations.get("high_fever") and observations.get("jaw_swelling")
     spreading = (
@@ -34,4 +40,10 @@ def is_emergency(observations: Dict[str, bool]) -> bool:
         and observations.get("trismus")
         and observations.get("jaw_swelling")
     )
-    return bool(high_fever_swelling or spreading)
+    osteomyelitis_like = (
+        observations.get("high_fever")
+        and observations.get("severe_pain")
+        and observations.get("trismus")
+    )
+    gland_abscess = observations.get("high_fever") and observations.get("gland_swelling")
+    return bool(high_fever_swelling or spreading or osteomyelitis_like or gland_abscess)

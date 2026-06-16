@@ -1,3 +1,3 @@
 """Loyiha versiyasi."""
 
-VERSION = "1.1.0"
+VERSION = "1.5.0"

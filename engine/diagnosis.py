@@ -13,7 +13,7 @@ from medical import DIAGNOSTIC_GROUPS
 
 # Savollar soni chegaralari
 MIN_QUESTIONS = 4
-MAX_QUESTIONS = 12
+MAX_QUESTIONS = 14
 
 # Erta to'xtatish: yetakchi kasallik aniq ustun bo'lsa
 EARLY_STOP_CONFIDENCE = 0.82      # yetakchi ehtimol shu darajadan yuqori
@@ -107,4 +107,9 @@ def diagnose(
         "discriminators": top_disease.discriminators,
         "explanation": build_explanation(top_disease, category, lang),
         "category": category,
+        # Tashxis aniqlangandan keyingi boy ma'lumot (bo'sh bo'lishi mumkin)
+        "description": top_disease.get_description(lang),
+        "symptoms_text": top_disease.get_symptoms_text(lang),
+        "differential": top_disease.get_differential(lang),
+        "treatment": top_disease.get_treatment(lang),
     }
