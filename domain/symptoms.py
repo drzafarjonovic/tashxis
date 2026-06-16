@@ -157,6 +157,78 @@ QUESTIONS: Dict[str, Dict[str, str]] = {
         "ru": "Видна ли в десне маленькая дырочка или свищевой ход, из которого выходит гной?",
         "en": "Is there a small hole or pus-draining channel visible in the gum?",
     },
+    # ── NOKARIOZ / RIVOJLANISH (qattiq to'qima) BELGILARI ───────
+    "multiple_teeth_affected": {
+        "uz": "Muammo bitta emas, bir nechta tishda bir vaqtda ko'rinadimi?",
+        "ru": "Проблема видна не на одном, а сразу на нескольких зубах?",
+        "en": "Is the problem visible on several teeth at once, not just one?",
+    },
+    "since_childhood": {
+        "uz": "Bu o'zgarish tishlar chiqqanidan beri (bolalikdan) bormi?",
+        "ru": "Это изменение есть с момента прорезывания зубов (с детства)?",
+        "en": "Has this change been present since the teeth erupted (since childhood)?",
+    },
+    "family_history": {
+        "uz": "Oilangizdagilarda ham xuddi shunday tish muammosi bormi (nasliy)?",
+        "ru": "Есть ли такая же проблема с зубами у членов семьи (наследственная)?",
+        "en": "Do family members have the same kind of tooth problem (hereditary)?",
+    },
+    "brown_stains": {
+        "uz": "Tishlarda jigarrang dog'lar yoki chipor (notekis rangli) yuzalar bormi?",
+        "ru": "Есть ли на зубах коричневые пятна или крапчатая (пёстрая) поверхность?",
+        "en": "Are there brown stains or a mottled (speckled) surface on the teeth?",
+    },
+    "enamel_pits": {
+        "uz": "Emal yuzasida chuqurchalar, egatlar yoki notekis nuqsonlar bormi?",
+        "ru": "Есть ли на эмали ямки, бороздки или неровные дефекты?",
+        "en": "Are there pits, grooves or uneven defects on the enamel surface?",
+    },
+    "enamel_missing": {
+        "uz": "Tishning ba'zi joylarida emal umuman yo'q — ostidagi dentin ochiq ko'rinadimi?",
+        "ru": "На некоторых участках зуба эмаль полностью отсутствует — обнажён дентин?",
+        "en": "Is enamel completely absent in places — is the underlying dentin exposed?",
+    },
+    "wedge_defect": {
+        "uz": "Tish bo'ynida (milkka yaqin) ponasimon, V-shaklidagi nuqson bormi?",
+        "ru": "Есть ли у шейки зуба (у десны) клиновидный, V-образный дефект?",
+        "en": "Is there a wedge-shaped, V-shaped defect at the tooth neck (near the gum)?",
+    },
+    "occlusal_wear": {
+        "uz": "Tishlarning chaynov (yuqori) yuzasi yedirilib, tekislanib qolganmi?",
+        "ru": "Жевательная (верхняя) поверхность зубов стёрлась и стала плоской?",
+        "en": "Has the chewing (top) surface of the teeth worn down and flattened?",
+    },
+    "bruxism": {
+        "uz": "Tish g'ichirlatish yoki qattiq tishlash odatingiz bormi (ayniqsa uyquda)?",
+        "ru": "Есть ли привычка скрежетать зубами или сильно их сжимать (особенно во сне)?",
+        "en": "Do you grind or strongly clench your teeth (especially during sleep)?",
+    },
+    "hard_brushing": {
+        "uz": "Tishni juda qattiq, kuch bilan yoki haddan tashqari ko'p cho'tkalaysizmi?",
+        "ru": "Чистите ли вы зубы очень жёстко, с нажимом или слишком часто?",
+        "en": "Do you brush your teeth very hard, with force, or excessively often?",
+    },
+    "acid_exposure": {
+        "uz": "Tez-tez nordon narsa (limon, gazli ichimlik) yoki kislota (qusish/reflyuks) ta'siri bormi?",
+        "ru": "Часто ли есть контакт с кислым (лимон, газировка) или кислотой (рвота/рефлюкс)?",
+        "en": "Is there frequent contact with acid (lemon, soda) or stomach acid (vomiting/reflux)?",
+    },
+    "smooth_shiny_surface": {
+        "uz": "Yedirilgan joy silliq, yaltiroq va botiq (kosacha shaklida) ko'rinadimi?",
+        "ru": "Стёртый участок выглядит гладким, блестящим и вогнутым (как чашечка)?",
+        "en": "Does the worn area look smooth, shiny and concave (cupped)?",
+    },
+    "chalky_enamel": {
+        "uz": "Emal bo'rga o'xshab oqargan, mo'rt yoki to'kiluvchan bo'lib qolganmi?",
+        "ru": "Эмаль стала меловидной, хрупкой или крошащейся?",
+        "en": "Has the enamel become chalky, brittle or crumbling?",
+    },
+    "abnormal_tooth_color": {
+        "uz": "Tishlar tug'malik bilan g'ayritabiiy rangda — sarg'ish-jigarrang, kulrang yoki yarim shaffofmi?",
+        "ru": "Зубы с рождения необычного цвета — желтовато-коричневые, серые или полупрозрачные?",
+        "en": "Are the teeth an unusual colour from birth — yellow-brown, grey or translucent?",
+    },
+
     # ── MILK / PERIODONTAL ───────────────────────────────────────
     "gum_bleeding": {
         "uz": "Milkdan qon keladimi — tish yuvganda yoki ovqat yeyishda?",
@@ -438,6 +510,24 @@ CANDIDATE_SYMPTOMS: Dict[str, List[str]] = {
         "pressure_sensation",
         "fever",
         "lymph_nodes",
+        # nokarioz / rivojlanish belgilarini ajratuvchi savollar
+        "multiple_teeth_affected",
+        "since_childhood",
+        "family_history",
+        "brown_stains",
+        "enamel_pits",
+        "enamel_missing",
+        "wedge_defect",
+        "occlusal_wear",
+        "bruxism",
+        "hard_brushing",
+        "acid_exposure",
+        "smooth_shiny_surface",
+        "chalky_enamel",
+        "abnormal_tooth_color",
+        "cold_sensitivity",
+        "gum_recession",
+        "tooth_mobility",
     ],
     # pulp/periapical — ichki bo'linish (hozir engine to'g'ridan "tooth" guruhini ishlatadi,
     # bu pullar kelajakdagi batafsil tahlil uchun saqlanadi)

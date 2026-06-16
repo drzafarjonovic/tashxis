@@ -15,7 +15,6 @@ from medical import ALL_DISEASES
 KNOWN_MISSING = {
     "acute_pain",
     "diffuse_swelling",
-    "hot_pain",
     "no_fever",
     "no_periodontal_pocket",
     "root_exposure",
