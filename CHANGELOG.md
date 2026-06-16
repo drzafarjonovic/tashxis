@@ -1,5 +1,48 @@
 # Changelog
 
+## [2.0.0] - 2026-06 — Bayesian Clinical Core
+
+V2.0 loyihani oddiy Bayes-botdan **klinik qaror qabul qilish platformasi**ga
+yo'naltiradi. Bu relizda **deterministik yadro to'liq faol**; ma'lumot/internet
+talab qiladigan qatlamlar (ML, kalibrlash fit, self-learning, AI) **interfeys
+sifatida ulanган va xavfsiz fallback bilan dormant** turadi.
+
+### Faol (bu relizda ishlaydi)
+- **Clinical Prior System** — har kasallikka epidemiologik prior:
+  `effective_prior = base(prevalence) × age_factor × sex_factor`.
+  121 kasallik 5 tarqalganlik tier'iga ajratildi (`medical/epidemiology.py`).
+- **Demographic Engine** — sessiya boshida yosh (5 guruh) va jins yig'iladi
+  (`DemographicContext`) va prior orqali Bayes'ga ta'sir qiladi. Misol: agressiv
+  parodontit 13-18 yoshda 0.38 → 0.64; og'iz saratoni keksa erkakda ko'tariladi.
+- **Anatomical Location Intelligence** — joylashuv endi matematikaga kiradi:
+  `P(D|S,L) ∝ P(D)·P(S|D)·P(L|D)`. Misol: pastki jag' belgilanса perikoronit
+  0.48 → 0.59 ko'tariladi.
+- **Adaptive Question Engine** — Expected Diagnostic Gain; o'rtacha savol soni
+  ~10-12 dan **~7.5 ga** tushdi (erta to'xtash + priorlar).
+- **Clinical Data Collection Platform** — yangi DB jadvallari:
+  diagnosis_sessions, session_answers, doctor_feedback, disease_statistics,
+  priors, model_versions. Har sessiya (demografiya, joylashuv, javoblar, natija)
+  saqlanadi (DB ixtiyoriy — o'chiq bo'lsa bot baribir ishlaydi).
+
+### Dormant (interfeys tayyor, ma'lumot/internet kelganda yoqiladi)
+- **ML Layer** (`engine/ml.py`) — Bayes+ML gibrid (0.6/0.4). Model yo'q →
+  sof Bayes'ga fallback. CatBoost real dataset va internet talab qiladi.
+- **Confidence Calibration** (`engine/calibration.py`) — Isotonic (PAV)
+  interfeysi; hozir identity (labeled outcome yo'q).
+- **Self-Learning Prior Update** — `priors` jadvalidan o'rganilgan
+  multiplikatorlar startda yuklanadi; tasdiqlangan tashxislar to'planganda ishlaydi.
+- **AI Clinical Explainer** — Groq interfeysi (`AI_ENABLED=false`).
+
+### Validatsiya
+- 121/121 kasallik o'z belgilaridan to'g'ri aniqlanadi (priorlar bilan ham).
+- Demografiya va joylashuv rankingni kutilgan yo'nalishda o'zgartiradi.
+- Barcha modullar `py_compile`dan o'tdi.
+
+### Eslatma
+- Prior tier'lari ataylab YUMSHOQ (nudge) — mos belgili kam uchraydigan kasallik
+  baribir yetib boriladi. Real ma'lumot to'planganda kalibrlanadi.
+- Sandbox internetsiz: ML/AI o'rnatib/sinab bo'lmadi (interfeys + fallback bilan).
+
 ## [1.5.0] - 2026-06
 
 ### Tashxis aniqligi — joylashuvni belgilash

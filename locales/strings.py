@@ -260,6 +260,24 @@ STRINGS = {
         "en": "Session expired. Please send /start.",
     },
 
+    # ── DEMOGRAFIYA (yosh / jins) ─────────────────────────────────
+    "demo_q_age": {
+        "uz": "👤 Aniqlikni oshirish uchun: yoshingiz nechada?",
+        "ru": "👤 Для точности: сколько вам лет?",
+        "en": "👤 To improve accuracy: how old are you?",
+    },
+    "demo_q_sex": {
+        "uz": "Jinsingiz?",
+        "ru": "Ваш пол?",
+        "en": "Your sex?",
+    },
+    "demo_sex_male": {"uz": "👨 Erkak", "ru": "👨 Мужской", "en": "👨 Male"},
+    "demo_sex_female": {"uz": "👩 Ayol", "ru": "👩 Женский", "en": "👩 Female"},
+    "demo_skip": {"uz": "⏭️ O'tkazib yuborish", "ru": "⏭️ Пропустить", "en": "⏭️ Skip"},
+    "demo_label": {"uz": "Bemor", "ru": "Пациент", "en": "Patient"},
+    "demo_sex_male_short": {"uz": "erkak", "ru": "муж.", "en": "male"},
+    "demo_sex_female_short": {"uz": "ayol", "ru": "жен.", "en": "female"},
+
     # ── JOYLASHUVNI ANIQLASH (tish) ───────────────────────────────
     "loc_step_prefix": {
         "uz": "📍 Joylashuvni aniqlaymiz",

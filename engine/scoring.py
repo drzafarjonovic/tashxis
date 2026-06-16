@@ -13,8 +13,10 @@ Bu yondashuv noaniqlikni to'g'ri boshqaradi va haqiqiy ishonchlilik beradi.
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
+from engine.location import location_likelihood
+from engine.priors import effective_prior
 from medical.disease_model import Disease
 
 # Simptom kasallikda KUZATILISH (present=True) ehtimoli, belgilar turiga qarab.
@@ -55,19 +57,33 @@ def _log_likelihood(disease: Disease, observations: Dict[str, bool]) -> float:
 def posterior(
     diseases: List[Disease],
     observations: Dict[str, bool],
+    demo: Optional[object] = None,
+    location: Optional[Dict[str, str]] = None,
 ) -> List[Tuple[Disease, float]]:
     """
-    Kasalliklar bo'yicha normallashtirilgan aposterior ehtimollar.
+    Kasalliklar bo'yicha normallashtirilgan aposterior ehtimollar:
+
+        P(D | S, L) ∝ P(D | demografiya) · P(S | D) · P(L | D)
+
+    - P(D | demografiya): epidemiologik prior (tarqalganlik × yosh × jins)
+    - P(S | D): simptomlar likelihood'i (so'ralmaganlar neytral)
+    - P(L | D): anatomik joylashuv likelihood'i (profil bo'lmasa neytral)
+
     Kamayish tartibida saralangan (disease, probability) ro'yxati.
     """
     if not diseases:
         return []
 
-    log_likes = [_log_likelihood(d, observations) for d in diseases]
+    log_scores = []
+    for d in diseases:
+        score = _log_likelihood(d, observations)
+        score += math.log(max(effective_prior(d, demo), _EPS))
+        score += math.log(max(location_likelihood(d, location), _EPS))
+        log_scores.append(score)
 
     # Softmax (log-sum-exp orqali barqaror)
-    max_ll = max(log_likes)
-    exps = [math.exp(ll - max_ll) for ll in log_likes]
+    max_ll = max(log_scores)
+    exps = [math.exp(ll - max_ll) for ll in log_scores]
     total = sum(exps) or 1.0
     probs = [e / total for e in exps]
 

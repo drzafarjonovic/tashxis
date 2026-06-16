@@ -9,6 +9,7 @@ from medical.diseases.trauma import TRAUMA_DISEASES
 from medical.diseases.dentition import DENTITION_DISEASES
 from medical.diseases.salivary import SALIVARY_DISEASES
 from medical.info import DISEASE_INFO
+from medical.epidemiology import PREVALENCE, LOCATION_PROFILES
 
 ALL_DISEASES = (
     ALL_TOOTH_DISEASES
@@ -36,6 +37,15 @@ for _d in ALL_DISEASES:
         _d.differential = _info.get("differential", {})
     if not _d.treatment:
         _d.treatment = _info.get("treatment", {})
+
+# Epidemiologik prior (tarqalganlik) va anatomik joylashuv profilini biriktirish.
+for _d in ALL_DISEASES:
+    _tier = PREVALENCE.get(_d.id)
+    if _tier:
+        _d.prevalence = _tier
+    _profile = LOCATION_PROFILES.get(_d.id)
+    if _profile and not _d.location_profile:
+        _d.location_profile = dict(_profile)
 
 # Diagnostik guruhlar — engine foydalanuvchi tanlagan kategoriya bo'yicha ishlaydi.
 # "tooth" guruhiga barcha tish kasalliklari (karies + nokarioz + pulpit + periapikal)

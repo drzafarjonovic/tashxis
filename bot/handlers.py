@@ -20,6 +20,8 @@ from bot.keyboards import (
     catalog_categories_keyboard,
     catalog_diseases_keyboard,
     category_keyboard,
+    demo_age_keyboard,
+    demo_sex_keyboard,
     disease_card_keyboard,
     lang_keyboard,
     localization_keyboard,
@@ -32,6 +34,7 @@ from domain.symptoms import question_text
 from engine import (
     CATEGORY_MAP,
     MAX_QUESTIONS,
+    DemographicContext,
     diagnose,
     get_next_question,
     is_emergency,
@@ -71,6 +74,16 @@ _LOC_LABELS = {
 
 # id → Disease (ma'lumotnoma uchun tez qidiruv)
 _DISEASE_BY_ID = {d.id: d for d in ALL_DISEASES}
+
+
+def _demo_ctx(data: dict) -> DemographicContext:
+    """Sessiya ma'lumotidan DemographicContext tuzadi."""
+    return DemographicContext.from_dict(data.get("demo"))
+
+
+def _loc(data: dict) -> dict:
+    """Sessiya ma'lumotidan joylashuv lug'atini qaytaradi."""
+    return data.get("location") or {}
 
 
 def _esc(text: str) -> str:
@@ -176,8 +189,44 @@ async def text_handler(message: Message, state: FSMContext):
 
 
 async def _start_triage(message: Message, state: FSMContext, lang: str):
-    await state.update_data(symptoms={}, asked=[], q_count=0, category=None, location={})
-    await message.answer(
+    await state.update_data(symptoms={}, asked=[], q_count=0, category=None, location={}, demo={})
+    # Demographic Engine: avval yosh va jins (aniqlikni oshirish uchun)
+    await message.answer(t("demo_q_age", lang), reply_markup=demo_age_keyboard(lang))
+    await state.set_state(DiagnosticFSM.demographics)
+
+
+# ─────────────────────────────────────────────────────────────────
+#  DEMOGRAFIYA (yosh / jins)
+# ─────────────────────────────────────────────────────────────────
+
+@router.callback_query(DiagnosticFSM.demographics, F.data.startswith("dg_"))
+async def cb_demographics(call: CallbackQuery, state: FSMContext):
+    await call.answer()
+    data = await state.get_data()
+    lang = data.get("lang", "uz")
+    demo = data.get("demo", {})
+
+    # "dg_<field>_<value>"  (masalan: dg_age_19-40, dg_sex_male, dg_age_skip)
+    parts = call.data.split("_", 2)
+    if len(parts) < 3:
+        return
+    field, value = parts[1], parts[2]
+
+    await call.message.edit_reply_markup(reply_markup=None)
+
+    if field == "age":
+        demo["age_group"] = None if value == "skip" else value
+        await state.update_data(demo=demo)
+        # Keyingi qadam — jins
+        await call.message.answer(t("demo_q_sex", lang), reply_markup=demo_sex_keyboard(lang))
+        return
+
+    # field == "sex"
+    demo["sex"] = None if value == "skip" else value
+    await state.update_data(demo=demo)
+
+    # Demografiya tugadi — muammo joyini tanlashga o'tamiz
+    await call.message.answer(
         t("choose_location", lang),
         reply_markup=category_keyboard(lang),
     )
@@ -288,8 +337,11 @@ async def cb_answer(call: CallbackQuery, state: FSMContext):
         await state.clear()
         return
 
+    demo = _demo_ctx(data)
+    location = _loc(data)
+
     # Erta to'xtatish yoki maksimumga yetish
-    if q_count >= MAX_QUESTIONS or should_stop(category, symptoms, q_count):
+    if q_count >= MAX_QUESTIONS or should_stop(category, symptoms, q_count, demo, location):
         await _show_result(call.message, state, lang, symptoms, category)
         return
 
@@ -302,8 +354,10 @@ async def _ask_next(message: Message, state: FSMContext, lang: str):
     asked = data.get("asked", [])
     symptoms = data.get("symptoms", {})
     q_count = data.get("q_count", 0)
+    demo = _demo_ctx(data)
+    location = _loc(data)
 
-    qid = get_next_question(category, symptoms, asked)
+    qid = get_next_question(category, symptoms, asked, demo, location)
     if qid is None:
         await _show_result(message, state, lang, symptoms, category)
         return
@@ -330,16 +384,22 @@ async def _show_result(
 
     data = await state.get_data()
     location = data.get("location", {})
+    demo = _demo_ctx(data)
+    asked = data.get("asked", [])
 
-    result = diagnose(category, symptoms, lang)
+    result = diagnose(category, symptoms, lang, demo, location)
 
-    # DB ga yozish (xavfsiz — DB o'chiq bo'lsa o'tkazib yuboriladi)
-    await repository.save_diagnosis(
+    # Clinical Data Collection Platform: to'liq sessiyani saqlash
+    # (xavfsiz — DB o'chiq bo'lsa o'tkazib yuboriladi)
+    await repository.save_session(
         telegram_id=message.chat.id,
         lang=lang,
         category=category,
         result=result,
         symptoms=symptoms,
+        asked=asked,
+        demo=demo,
+        location=location,
     )
 
     lines = [t("result_header", lang), ""]
@@ -352,6 +412,15 @@ async def _show_result(
         f"🏷 <b>{_esc(t('top_diagnosis', lang))}:</b> {_esc(result['diagnosis'])}",
         f"📊 {_esc(t('confidence_label', lang))}: {confidence}%",
     ]
+
+    # Demografiya (kiritilgan bo'lsa)
+    demo_bits = []
+    if demo.age_group:
+        demo_bits.append(demo.age_group)
+    if demo.sex:
+        demo_bits.append(t(f"demo_sex_{demo.sex}_short", lang))
+    if demo_bits:
+        lines += [f"👤 <b>{_esc(t('demo_label', lang))}:</b> {_esc(', '.join(demo_bits))}"]
 
     area = _location_text(location, lang)
     if area:

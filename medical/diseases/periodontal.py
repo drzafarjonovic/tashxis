@@ -217,7 +217,6 @@ periodontitis_aggressive = Disease(
     optional_features={
         "young_patient": True,
         "gum_bleeding": True,
-        "generalized": True,
     },
     negative_features={
         "no_bone_loss": True,
