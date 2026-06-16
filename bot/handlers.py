@@ -220,7 +220,13 @@ async def cb_lang(call: CallbackQuery, state: FSMContext):
     lang = call.data.split("_")[1]  # uz | ru | en
     await state.update_data(lang=lang)
 
-    await repository.upsert_user(call.from_user.id, lang)
+    await repository.upsert_user(
+        call.from_user.id,
+        lang,
+        first_name=call.from_user.first_name,
+        last_name=call.from_user.last_name,
+        username=call.from_user.username,
+    )
 
     await call.message.edit_text(t("lang_set", lang))
     await call.message.answer(

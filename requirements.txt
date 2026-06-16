@@ -11,6 +11,11 @@ annotated-types==0.7.0
 # Database
 asyncpg==0.29.0
 
+# Admin hisobotlari — Excel / PDF / grafik
+openpyxl==3.1.5
+reportlab==4.2.2
+matplotlib==3.9.2
+
 # Utilities
 python-dotenv==1.0.1
 certifi>=2023.7.22

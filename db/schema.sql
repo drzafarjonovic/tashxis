@@ -106,3 +106,11 @@ CREATE INDEX IF NOT EXISTS idx_sessions_telegram ON diagnosis_sessions(telegram_
 CREATE INDEX IF NOT EXISTS idx_sessions_created  ON diagnosis_sessions(started_at);
 CREATE INDEX IF NOT EXISTS idx_answers_session   ON session_answers(session_id);
 CREATE INDEX IF NOT EXISTS idx_feedback_session  ON doctor_feedback(session_id);
+
+
+-- ════════════════════════════════════════════════════════════════
+--  v1.7.0 — Admin audit/hisobot uchun foydalanuvchi profili
+-- ════════════════════════════════════════════════════════════════
+ALTER TABLE bot_users ADD COLUMN IF NOT EXISTS first_name TEXT;
+ALTER TABLE bot_users ADD COLUMN IF NOT EXISTS last_name  TEXT;
+ALTER TABLE bot_users ADD COLUMN IF NOT EXISTS username   TEXT;
