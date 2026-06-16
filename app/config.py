@@ -37,6 +37,10 @@ class Settings:
     # AI kaliti (ai_enabled=True bo'lganda kerak)
     groq_api_key: str
 
+    # Admin bilan aloqa (ixtiyoriy). ADMIN_ID — admin Telegram ID si (relay uchun).
+    admin_id: int
+    admin_username: str
+
     # Health-check web server porti (Railway PORT ni avtomatik beradi)
     port: int
 
@@ -46,6 +50,18 @@ class Settings:
     @property
     def db_enabled(self) -> bool:
         return bool(self.database_url)
+
+    @property
+    def admin_enabled(self) -> bool:
+        return self.admin_id > 0
+
+
+def _get_int(name: str, default: int = 0) -> int:
+    raw = (os.getenv(name) or "").strip()
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return default
 
 
 def _load_settings() -> Settings:
@@ -60,6 +76,8 @@ def _load_settings() -> Settings:
         database_url=os.getenv("DATABASE_URL", "").strip(),
         ai_enabled=_get_bool("AI_ENABLED", default=False),
         groq_api_key=(os.getenv("GROQ_API_KEY") or os.getenv("AI_API_KEY") or "").strip(),
+        admin_id=_get_int("ADMIN_ID", 0),
+        admin_username=os.getenv("ADMIN_USERNAME", "").strip().lstrip("@"),
         port=int(os.getenv("PORT", "8080")),
         log_level=os.getenv("LOG_LEVEL", "INFO").strip().upper(),
     )

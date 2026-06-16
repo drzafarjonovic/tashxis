@@ -9,7 +9,7 @@ from aiogram.types import BotCommand
 from aiohttp import web
 
 from app.config import settings
-from app.version import VERSION
+from app.version import APP_NAME, VERSION
 from bot.handlers import router
 from db.database import close_db, init_db
 
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 async def health_check(request: web.Request) -> web.Response:
-    return web.Response(text=f"OK — Tashxis bot v{VERSION} ishlayapti!")
+    return web.Response(text=f"OK — {APP_NAME} v{VERSION} ishlayapti!")
 
 
 async def start_web() -> web.AppRunner:
@@ -39,12 +39,14 @@ async def start_web() -> web.AppRunner:
 async def set_commands(bot: Bot) -> None:
     await bot.set_my_commands([
         BotCommand(command="start", description="Boshlash / Начать / Start"),
+        BotCommand(command="about", description="Bot haqida / О боте / About"),
         BotCommand(command="help", description="Yordam / Помощь / Help"),
     ])
 
 
 async def main() -> None:
-    logger.info("Tashxis bot v%s ishga tushmoqda... (AI_ENABLED=%s)", VERSION, settings.ai_enabled)
+    logger.info("%s v%s ishga tushmoqda... (AI_ENABLED=%s, ADMIN=%s)",
+                APP_NAME, VERSION, settings.ai_enabled, settings.admin_enabled)
 
     runner = await start_web()
     await init_db()

@@ -10,12 +10,14 @@ from __future__ import annotations
 
 import html
 import logging
+import os
 
 from aiogram import F, Router
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, FSInputFile, Message
 
+from app.config import settings
 from bot.keyboards import (
     catalog_categories_keyboard,
     catalog_diseases_keyboard,
@@ -45,6 +47,9 @@ from medical import ALL_DISEASES, DISEASES_BY_CATEGORY
 
 logger = logging.getLogger(__name__)
 router = Router()
+
+# Logo (ixtiyoriy) — agar fayl mavjud bo'lsa, /start da yuboriladi.
+LOGO_PATH = os.path.join("assets", "logo.png")
 
 # Tashxisni aniqlashtirish uchun joylashuv bosqichlari (kategoriyaga qarab)
 LOCATION_FLOW = {
@@ -126,10 +131,20 @@ def _append_info_blocks(lines: list, lang: str, description: str,
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer(
-        t("welcome", "uz"),
-        reply_markup=lang_keyboard(),
-    )
+    welcome = t("welcome", "uz")
+    sent = False
+    if os.path.exists(LOGO_PATH):
+        try:
+            await message.answer_photo(
+                FSInputFile(LOGO_PATH),
+                caption=welcome,
+                reply_markup=lang_keyboard(),
+            )
+            sent = True
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Logo yuborilmadi: %s", exc)
+    if not sent:
+        await message.answer(welcome, reply_markup=lang_keyboard())
     await state.set_state(DiagnosticFSM.lang)
 
 
@@ -138,6 +153,38 @@ async def cmd_help(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
     await message.answer(t("help_text", lang))
+
+
+@router.message(Command("about"))
+async def cmd_about(message: Message, state: FSMContext):
+    data = await state.get_data()
+    lang = data.get("lang", "uz")
+    await message.answer(t("about_text", lang))
+
+
+@router.message(Command("reply"))
+async def cmd_admin_reply(message: Message, state: FSMContext):
+    """Admin javobi: /reply <user_id> <matn> → foydalanuvchiga yetkaziladi."""
+    if not settings.admin_enabled or message.from_user.id != settings.admin_id:
+        return  # admin emas — e'tiborsiz qoldiriladi
+    parts = (message.text or "").split(maxsplit=2)
+    if len(parts) < 3:
+        await message.answer("Foydalanish: <code>/reply &lt;user_id&gt; matn</code>")
+        return
+    try:
+        target_id = int(parts[1])
+    except ValueError:
+        await message.answer("user_id butun son bo'lishi kerak.")
+        return
+    reply_text = parts[2]
+    try:
+        await message.bot.send_message(
+            target_id,
+            f"{t('admin_reply_received', 'uz')}\n\n{_esc(reply_text)}",
+        )
+        await message.answer("✅ Javob yuborildi.")
+    except Exception as exc:  # noqa: BLE001
+        await message.answer(f"❌ Yuborib bo'lmadi: {_esc(exc)}")
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -168,10 +215,18 @@ async def cb_lang(call: CallbackQuery, state: FSMContext):
 async def text_handler(message: Message, state: FSMContext):
     data = await state.get_data()
     lang = data.get("lang", "uz")
+    current = await state.get_state()
+
+    # Admin bilan aloqa holatida — matnni administratorga yetkazamiz
+    if current == DiagnosticFSM.contact.state:
+        await _relay_to_admin(message, state, lang)
+        return
 
     start_labels = {t("start_btn", l) for l in ("uz", "ru", "en")}
     help_labels = {t("help_btn", l) for l in ("uz", "ru", "en")}
     ref_labels = {t("reference_btn", l) for l in ("uz", "ru", "en")}
+    about_labels = {t("about_btn", l) for l in ("uz", "ru", "en")}
+    contact_labels = {t("contact_btn", l) for l in ("uz", "ru", "en")}
 
     if message.text in start_labels:
         await _start_triage(message, state, lang)
@@ -180,12 +235,51 @@ async def text_handler(message: Message, state: FSMContext):
             t("ref_choose_category", lang),
             reply_markup=catalog_categories_keyboard(lang),
         )
+    elif message.text in about_labels:
+        await message.answer(t("about_text", lang))
+    elif message.text in contact_labels:
+        await _start_contact(message, state, lang)
     elif message.text in help_labels:
         await message.answer(t("help_text", lang))
     else:
-        current = await state.get_state()
         if current is None:
             await message.answer(t("unknown_command", lang))
+
+
+# ─────────────────────────────────────────────────────────────────
+#  ADMIN BILAN ALOQA (relay)
+# ─────────────────────────────────────────────────────────────────
+
+async def _start_contact(message: Message, state: FSMContext, lang: str):
+    if not settings.admin_enabled:
+        if settings.admin_username:
+            await message.answer(
+                f"{t('contact_btn', lang)}: @{_esc(settings.admin_username)}"
+            )
+        else:
+            await message.answer(t("contact_no_admin", lang))
+        return
+    await message.answer(t("contact_prompt", lang))
+    await state.set_state(DiagnosticFSM.contact)
+
+
+async def _relay_to_admin(message: Message, state: FSMContext, lang: str):
+    user = message.from_user
+    uname = f"@{user.username}" if user.username else "—"
+    header = (
+        "📩 <b>Oral Detect — yangi xabar</b>\n"
+        f"👤 {_esc(user.full_name)} ({uname})\n"
+        f"🆔 <code>{user.id}</code>\n\n"
+    )
+    body = _esc(message.text or "")
+    footer = f"\n\n↩️ Javob: <code>/reply {user.id} matn</code>"
+    try:
+        await message.bot.send_message(settings.admin_id, header + body + footer)
+        await message.answer(t("contact_sent", lang))
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Admin relay xatoligi: %s", exc)
+        await message.answer(t("contact_failed", lang))
+    await state.set_state(None)
 
 
 async def _start_triage(message: Message, state: FSMContext, lang: str):

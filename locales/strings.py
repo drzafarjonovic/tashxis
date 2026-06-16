@@ -10,26 +10,112 @@ STRINGS = {
     # ── START ────────────────────────────────────────────────────
     "welcome": {
         "uz": (
-            "👋 Assalomu alaykum!\n\n"
-            "Men stomatologik yordamchi botman.\n"
-            "Savollar orqali sizning shikoyatingizga mos tashxis topishga harakat qilaman.\n\n"
-            "⚠️ Bu bot tibbiy maslahat emas. Aniq tashxis uchun shifokorga murojaat qiling.\n\n"
+            "🦷 <b>Oral Detect</b> ga xush kelibsiz!\n\n"
+            "Men og'iz bo'shlig'i va tish kasalliklari bo'yicha aqlli yordamchi botman. "
+            "Savollar orqali shikoyatingizga mos ehtimolli tashxisni topaman va "
+            "kasallik haqida to'liq ma'lumot beraman.\n\n"
+            "⚠️ Bu bot tibbiy maslahat o'rnini bosmaydi. Aniq tashxis uchun shifokorga "
+            "murojaat qiling.\n\n"
             "Tilni tanlang 👇"
         ),
         "ru": (
-            "👋 Здравствуйте!\n\n"
-            "Я стоматологический бот-помощник.\n"
-            "Задавая вопросы, постараюсь подобрать диагноз под ваши жалобы.\n\n"
-            "⚠️ Это не медицинская консультация. Для точного диагноза обратитесь к врачу.\n\n"
+            "🦷 Добро пожаловать в <b>Oral Detect</b>!\n\n"
+            "Я умный бот-помощник по заболеваниям полости рта и зубов. С помощью вопросов "
+            "подберу вероятный диагноз под ваши жалобы и дам полную информацию о заболевании.\n\n"
+            "⚠️ Бот не заменяет медицинскую консультацию. Для точного диагноза обратитесь к врачу.\n\n"
             "Выберите язык 👇"
         ),
         "en": (
-            "👋 Hello!\n\n"
-            "I am a dental assistant bot.\n"
-            "I will ask questions to help find a diagnosis that matches your complaint.\n\n"
-            "⚠️ This is not medical advice. See a dentist for an accurate diagnosis.\n\n"
+            "🦷 Welcome to <b>Oral Detect</b>!\n\n"
+            "I am a smart assistant bot for oral and dental conditions. Through questions I find "
+            "the most likely diagnosis for your complaint and give full information about the condition.\n\n"
+            "⚠️ This bot does not replace medical advice. See a dentist for an accurate diagnosis.\n\n"
             "Choose your language 👇"
         ),
+    },
+    "about_text": {
+        "uz": (
+            "🦷 <b>Oral Detect — bot haqida</b>\n\n"
+            "Oral Detect og'iz bo'shlig'i, tish, milk va jag' kasalliklari bo'yicha "
+            "dastlabki (triage) baholash beradi. Baza 121 ta kasallikni qamrab oladi.\n\n"
+            "<b>Qanday ishlaydi?</b>\n"
+            "1️⃣ «Tashxisni boshlash»ni bosing\n"
+            "2️⃣ Yosh va jinsingizni belgilang (aniqlik uchun)\n"
+            "3️⃣ Muammo joyini tanlang (tish, milk, shilliq, jag' va h.k.)\n"
+            "4️⃣ Tish bo'lsa — qaysi jag'/tomon/tish ekanini ko'rsating\n"
+            "5️⃣ «Ha/Yo'q» savollarga javob bering\n"
+            "6️⃣ Natija: ehtimolli tashxis + kasallik haqida ma'lumot + tavsiya\n\n"
+            "📚 <b>Kasalliklar ma'lumotnomasi</b> — istalgan kasallikni qidirib, u haqida "
+            "to'liq o'qishingiz mumkin.\n\n"
+            "✉️ <b>Admin bilan aloqa</b> — savol, taklif yoki xato haqida xabar bering.\n\n"
+            "⚠️ <i>Diqqat: natija tibbiy xulosa emas. Aniq tashxis va davolash uchun "
+            "stomatologga murojaat qiling.</i>"
+        ),
+        "ru": (
+            "🦷 <b>Oral Detect — о боте</b>\n\n"
+            "Oral Detect проводит предварительную (триаж) оценку заболеваний полости рта, "
+            "зубов, дёсен и челюсти. База охватывает 121 заболевание.\n\n"
+            "<b>Как это работает?</b>\n"
+            "1️⃣ Нажмите «Начать диагностику»\n"
+            "2️⃣ Укажите возраст и пол (для точности)\n"
+            "3️⃣ Выберите место проблемы (зуб, десна, слизистая, челюсть и т.д.)\n"
+            "4️⃣ Если зуб — укажите челюсть/сторону/тип зуба\n"
+            "5️⃣ Отвечайте «Да/Нет» на вопросы\n"
+            "6️⃣ Результат: вероятный диагноз + информация + рекомендация\n\n"
+            "📚 <b>Справочник заболеваний</b> — найдите любое заболевание и прочитайте о нём.\n\n"
+            "✉️ <b>Связь с админом</b> — сообщите вопрос, предложение или ошибку.\n\n"
+            "⚠️ <i>Внимание: результат не является медицинским заключением. Обратитесь к стоматологу.</i>"
+        ),
+        "en": (
+            "🦷 <b>Oral Detect — about</b>\n\n"
+            "Oral Detect provides a preliminary (triage) assessment of oral, dental, gum and jaw "
+            "conditions. The knowledge base covers 121 conditions.\n\n"
+            "<b>How it works:</b>\n"
+            "1️⃣ Press 'Start diagnosis'\n"
+            "2️⃣ Set your age and sex (for accuracy)\n"
+            "3️⃣ Choose the problem area (tooth, gum, mucosa, jaw, etc.)\n"
+            "4️⃣ For a tooth — indicate jaw/side/tooth type\n"
+            "5️⃣ Answer 'Yes/No' questions\n"
+            "6️⃣ Result: likely diagnosis + condition info + recommendation\n\n"
+            "📚 <b>Disease reference</b> — look up any condition and read about it.\n\n"
+            "✉️ <b>Contact admin</b> — send a question, suggestion or report an issue.\n\n"
+            "⚠️ <i>Note: the result is not a medical conclusion. Please see a dentist.</i>"
+        ),
+    },
+    "about_btn": {
+        "uz": "ℹ️ Bot haqida",
+        "ru": "ℹ️ О боте",
+        "en": "ℹ️ About",
+    },
+    "contact_btn": {
+        "uz": "✉️ Admin bilan aloqa",
+        "ru": "✉️ Связь с админом",
+        "en": "✉️ Contact admin",
+    },
+    "contact_prompt": {
+        "uz": "✍️ Xabaringizni yozing — u administratorga yetkaziladi.\n\nBekor qilish uchun /start yuboring.",
+        "ru": "✍️ Напишите ваше сообщение — оно будет передано администратору.\n\nДля отмены отправьте /start.",
+        "en": "✍️ Write your message — it will be forwarded to the administrator.\n\nSend /start to cancel.",
+    },
+    "contact_sent": {
+        "uz": "✅ Xabaringiz administratorga yuborildi. Tez orada javob beramiz, rahmat!",
+        "ru": "✅ Ваше сообщение отправлено администратору. Мы скоро ответим, спасибо!",
+        "en": "✅ Your message has been sent to the administrator. We'll reply soon, thank you!",
+    },
+    "contact_no_admin": {
+        "uz": "Hozircha admin bilan aloqa sozlanmagan. Keyinroq urinib ko'ring.",
+        "ru": "Связь с админом пока не настроена. Попробуйте позже.",
+        "en": "Admin contact is not configured yet. Please try later.",
+    },
+    "contact_failed": {
+        "uz": "Xabarni yuborib bo'lmadi. Iltimos, keyinroq urinib ko'ring.",
+        "ru": "Не удалось отправить сообщение. Пожалуйста, попробуйте позже.",
+        "en": "Could not send the message. Please try again later.",
+    },
+    "admin_reply_received": {
+        "uz": "💬 <b>Administrator javobi:</b>",
+        "ru": "💬 <b>Ответ администратора:</b>",
+        "en": "💬 <b>Reply from the administrator:</b>",
     },
     "menu_hint": {
         "uz": "Boshlash uchun pastdagi tugmani bosing 👇",

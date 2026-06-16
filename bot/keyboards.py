@@ -38,6 +38,10 @@ def main_keyboard(lang: str) -> ReplyKeyboardMarkup:
         keyboard=[
             [KeyboardButton(text=t("start_btn", lang))],
             [KeyboardButton(text=t("reference_btn", lang))],
+            [
+                KeyboardButton(text=t("about_btn", lang)),
+                KeyboardButton(text=t("contact_btn", lang)),
+            ],
             [KeyboardButton(text=t("help_btn", lang))],
         ],
         resize_keyboard=True,

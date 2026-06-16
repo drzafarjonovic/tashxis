@@ -1,6 +1,29 @@
 # Changelog
 
-## [2.0.0] - 2026-06 — Bayesian Clinical Core
+## [1.6.1] - 2026-06 — Oral Detect (rebrand + admin contact)
+
+### Brending
+- Bot nomi **Oral Detect** deb belgilandi (welcome, /about, health-check, loglar).
+- `/start` da kengaytirilgan kirish: bot haqida qisqacha + tilni tanlash.
+  Agar `assets/logo.png` mavjud bo'lsa, u rasm sifatida yuboriladi (ixtiyoriy).
+- **ℹ️ Bot haqida** — to'liq ishlatish qo'llanmasi (6 qadamli), ma'lumotnoma va
+  aloqa haqida; `/about` buyrug'i orqali ham ochiladi.
+
+### Yangi funksiya — Admin bilan aloqa
+- Menyuda **✉️ Admin bilan aloqa** tugmasi.
+- Ishlash tartibi (relay): foydalanuvchi bot ichida xabar yozadi → xabar
+  administratorга (`ADMIN_ID`) foydalanuvchi ismi/ID si bilan yetkaziladi →
+  admin **`/reply <user_id> matn`** orqali javob beradi → bot foydalanuvchiga
+  yetkazadi.
+- `ADMIN_ID` o'rnatilmagan bo'lsa: `ADMIN_USERNAME` havolasi yoki "sozlanmagan"
+  xabari ko'rsatiladi (bot baribir ishlaydi).
+- Yangi env: `ADMIN_ID`, `ADMIN_USERNAME` (`.env.example`da).
+
+### Versiyalash
+- Avvalgi reliz "2.0.0" emas, **1.5.1** deb qayta belgilandi (quyida); joriy
+  reliz **1.6.1**. (ML/kalibrlash/AI hali dormant — to'liq v2.0 emas.)
+
+## [1.5.1] - 2026-06 — Bayesian Clinical Core
 
 V2.0 loyihani oddiy Bayes-botdan **klinik qaror qabul qilish platformasi**ga
 yo'naltiradi. Bu relizda **deterministik yadro to'liq faol**; ma'lumot/internet
