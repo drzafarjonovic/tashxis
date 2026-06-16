@@ -41,12 +41,16 @@ async def set_commands(bot: Bot) -> None:
         BotCommand(command="start", description="Boshlash / Начать / Start"),
         BotCommand(command="about", description="Bot haqida / О боте / About"),
         BotCommand(command="help", description="Yordam / Помощь / Help"),
+        BotCommand(command="myid", description="Mening ID im / Мой ID / My ID"),
     ])
 
 
 async def main() -> None:
-    logger.info("%s v%s ishga tushmoqda... (AI_ENABLED=%s, ADMIN=%s)",
-                APP_NAME, VERSION, settings.ai_enabled, settings.admin_enabled)
+    logger.info(
+        "%s v%s ishga tushmoqda... (AI_ENABLED=%s, ADMIN_ID=%s)",
+        APP_NAME, VERSION, settings.ai_enabled,
+        settings.admin_id if settings.admin_enabled else "(sozlanmagan)",
+    )
 
     runner = await start_web()
     await init_db()

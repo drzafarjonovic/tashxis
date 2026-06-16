@@ -162,6 +162,29 @@ async def cmd_about(message: Message, state: FSMContext):
     await message.answer(t("about_text", lang))
 
 
+@router.message(Command("myid"))
+async def cmd_myid(message: Message, state: FSMContext):
+    """Diagnostika: foydalanuvchining Telegram ID si va admin holati."""
+    uid = message.from_user.id
+    is_admin = settings.admin_enabled and uid == settings.admin_id
+    lines = [
+        f"🆔 Sizning Telegram ID: <code>{uid}</code>",
+        f"Admin sifatida tan olindingizmi: {'✅ Ha' if is_admin else '❌ Yoq'}",
+    ]
+    if settings.admin_enabled:
+        lines.append(f"Sozlangan ADMIN_ID: <code>{settings.admin_id}</code>")
+        if not is_admin:
+            lines.append(
+                "ℹ️ ADMIN_ID ni shu ID ga o'zgartiring va botni qayta deploy qiling."
+            )
+    else:
+        lines.append(
+            "⚠️ ADMIN_ID hali sozlanmagan (yoki o'qilmadi). Railway'da ADMIN_ID "
+            "o'zgaruvchisini shu ID qiymati bilan qo'shing va qayta deploy qiling."
+        )
+    await message.answer("\n".join(lines))
+
+
 @router.message(Command("reply"))
 async def cmd_admin_reply(message: Message, state: FSMContext):
     """Admin javobi: /reply <user_id> <matn> → foydalanuvchiga yetkaziladi."""

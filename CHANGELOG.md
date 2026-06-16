@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.3] - 2026-06 — Admin contact diagnostics
+
+- Yangi **`/myid`** buyrug'i: foydalanuvchining Telegram ID si va bot uni admin
+  deb taniyaptimi yo'qmi ko'rsatadi (admin aloqani sozlashni osonlashtiradi).
+- Startup logida `ADMIN_ID` qiymati ko'rsatiladi (Railway loglaridan tekshirish uchun).
+- Eslatma: admin aloqa ishlashi uchun admin akkaunti botga avval `/start` bosishi
+  shart (Telegram boti suhbatni o'zi boshlay olmaydi) va `ADMIN_ID` to'g'ri raqam
+  bo'lishi kerak (`/myid` orqali tekshiriladi).
+
 ## [1.6.2] - 2026-06 — Trilingual start fix
 
 - `/start` endi **3 tilda** (o'zbek/rus/ingliz) qisqacha yo'riqnoma va til tanlash
