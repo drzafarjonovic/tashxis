@@ -7,3 +7,4 @@ class DiagnosticFSM(StatesGroup):
     category     = State()   # Muammo joyi (triage)
     localizing   = State()   # Joylashuvni aniqlash (jag'/tomon/tish turi)
     questioning  = State()   # Akinator savollari
+    contact      = State()   # Admin bilan aloqa (xabar yozish)
