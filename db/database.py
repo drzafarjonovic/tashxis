@@ -142,10 +142,21 @@ async def diagnose() -> str:
             "aws-0-...pooler.supabase.com:6543"
         )
     except Exception as exc:  # noqa: BLE001
-        return (
-            f"❌ Ulanib bo'lmadi:\n{type(exc).__name__}: {exc}\n\n"
-            "Tekshiring: pooler URL, user 'postgres.<ref>', parol to'g'riligi."
-        )
+        msg = str(exc)
+        low = msg.lower()
+        if "tenant" in low or "not found" in low:
+            hint = (
+                "SABAB: pooler 'tenant/user' ni topa olmadi — ko'pincha REGION xato.\n"
+                "YECHIM: Supabase Dashboard → Settings → Database → 'Connection pooling' "
+                "bo'limidagi TAYYOR connection string'ni nusxalang (u to'g'ri regionni o'z "
+                "ichiga oladi: aws-0-<sizning_region>). Region misol uchun ap-northeast-1, "
+                "eu-central-1, us-east-1 va h.k. bo'lishi mumkin — dashboard'dagisini ishlating."
+            )
+        elif "password" in low or "auth" in low:
+            hint = "SABAB: parol noto'g'ri. Supabase'da DB parolini tekshiring (@ → %40)."
+        else:
+            hint = "Tekshiring: pooler URL, user 'postgres.<ref>', parol to'g'riligi."
+        return f"❌ Ulanib bo'lmadi:\n{type(exc).__name__}: {msg}\n\n{hint}"
 
 
 async def close_db() -> None:

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.5] - 2026-06 — /dbtest aniqroq xato talqini
+
+- `/dbtest` Supabase pooler xatolarini aniqroq izohlaydi: "tenant/user not found"
+  → REGION xatosi (dashboard'dagi tayyor pooler string'ni ishlatish); "password"
+  → parol xatosi.
+
 ## [1.7.4] - 2026-06 — /dbtest qotib qolishi tuzatildi
 
 - `/dbtest` natijasi endi **oddiy matn** sifatida yuboriladi (HTML parse'siz) —
