@@ -32,6 +32,7 @@ from bot.keyboards import (
 )
 from bot.states import DiagnosticFSM
 from db import repository
+from db.database import is_enabled as db_connected
 from domain.symptoms import question_text
 from engine import (
     CATEGORY_MAP,
@@ -182,6 +183,9 @@ async def cmd_myid(message: Message, state: FSMContext):
             "⚠️ ADMIN_ID hali sozlanmagan (yoki o'qilmadi). Railway'da ADMIN_ID "
             "o'zgaruvchisini shu ID qiymati bilan qo'shing va qayta deploy qiling."
         )
+    lines.append(
+        f"🗄 Ma'lumotlar bazasi: {'✅ ulangan' if db_connected() else '❌ ulanmagan'}"
+    )
     await message.answer("\n".join(lines))
 
 

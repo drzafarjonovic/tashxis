@@ -57,12 +57,27 @@ def _admin_menu() -> InlineKeyboardMarkup:
 @admin_router.message(Command("admin"))
 async def cmd_admin(message: Message, state: FSMContext):
     if not _is_admin(message.from_user.id):
-        return  # admin emas — asosiy routerga o'tadi
+        # Jim qolish o'rniga aniq sabab (debug uchun)
+        if not settings.admin_enabled:
+            await message.answer(
+                "⚠️ ADMIN_ID sozlanmagan (yoki o'qilmadi).\n"
+                "Railway'da ADMIN_ID o'zgaruvchisini qo'shing va qayta deploy qiling.\n"
+                "ID ni bilish uchun: /myid"
+            )
+        else:
+            await message.answer(
+                "⛔ Bu buyruq faqat admin uchun.\n"
+                f"Sizning ID: <code>{message.from_user.id}</code>\n"
+                "Agar bu siz bo'lsangiz — ADMIN_ID ni shu ID ga to'g'rilang (/myid)."
+            )
+        return
     await state.set_state(None)
     if not db_enabled():
         await message.answer(
-            "⚠️ Ma'lumotlar bazasi (DATABASE_URL) sozlanmagan — hisobotlar uchun "
-            "ma'lumot yig'ilmaydi. Railway'da DATABASE_URL ni qo'shing."
+            "⚠️ Ma'lumotlar bazasi ulanmagan — hisobotlar uchun ma'lumot yo'q.\n"
+            "Railway'da DATABASE_URL (Supabase <b>Connection Pooler</b>, IPv4) to'g'ri "
+            "ekanini tekshiring va deploy loglarida 'ulanish tayyor' yozuvini qarang.\n"
+            "Holatni tekshirish: /myid"
         )
         return
     await message.answer("🛠 <b>Admin paneli — hisobotlar</b>\n\nKerakli hisobotni tanlang:",

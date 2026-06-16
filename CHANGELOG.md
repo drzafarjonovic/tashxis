@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.2] - 2026-06 — /admin va DB diagnostikasi
+
+- `/admin` endi jim qolmaydi: admin emas yoki ADMIN_ID sozlanmagan bo'lsa aniq
+  sabab va yo'riqnoma beradi; DB ulanmagan bo'lsa pooler/loglarni tekshirishni
+  taklif qiladi.
+- `/myid` ga **DB holati** qo'shildi (✅ ulangan / ❌ ulanmagan) — bir buyruqда
+  admin va baza holatini tekshirish.
+
 ## [1.7.1] - 2026-06 — DB ulanishini mustahkamlash (Supabase/Railway)
 
 - `asyncpg` ulanishiga **SSL** (Supabase talabi), **`statement_cache_size=0`**
