@@ -259,6 +259,81 @@ STRINGS = {
         "ru": "Сессия истекла. Пожалуйста, отправьте /start.",
         "en": "Session expired. Please send /start.",
     },
+
+    # ── JOYLASHUVNI ANIQLASH (tish) ───────────────────────────────
+    "loc_step_prefix": {
+        "uz": "📍 Joylashuvni aniqlaymiz",
+        "ru": "📍 Уточним расположение",
+        "en": "📍 Let's pinpoint the location",
+    },
+    "loc_q_jaw": {
+        "uz": "Muammo qaysi jag'da?",
+        "ru": "На какой челюсти проблема?",
+        "en": "Which jaw is affected?",
+    },
+    "loc_q_side": {
+        "uz": "Qaysi tomonda?",
+        "ru": "С какой стороны?",
+        "en": "Which side?",
+    },
+    "loc_q_type": {
+        "uz": "Qaysi tish (turi)?",
+        "ru": "Какой зуб (тип)?",
+        "en": "Which tooth (type)?",
+    },
+    "loc_opt_upper": {"uz": "⬆️ Yuqori jag'", "ru": "⬆️ Верхняя", "en": "⬆️ Upper"},
+    "loc_opt_lower": {"uz": "⬇️ Pastki jag'", "ru": "⬇️ Нижняя", "en": "⬇️ Lower"},
+    "loc_opt_right": {"uz": "➡️ O'ng tomon", "ru": "➡️ Правая", "en": "➡️ Right"},
+    "loc_opt_left": {"uz": "⬅️ Chap tomon", "ru": "⬅️ Левая", "en": "⬅️ Left"},
+    "loc_opt_incisor": {"uz": "Kurak tish", "ru": "Резец", "en": "Incisor"},
+    "loc_opt_canine": {"uz": "Qoziq tish", "ru": "Клык", "en": "Canine"},
+    "loc_opt_premolar": {"uz": "Kichik oziq (premolyar)", "ru": "Малый коренной (премоляр)", "en": "Premolar"},
+    "loc_opt_molar": {"uz": "Katta oziq (molyar)", "ru": "Большой коренной (моляр)", "en": "Molar"},
+    "loc_opt_unknown": {"uz": "🤷 Bilmayman / aniq emas", "ru": "🤷 Не знаю / не уверен", "en": "🤷 Not sure"},
+    "loc_area_label": {
+        "uz": "Ko'rsatilgan soha",
+        "ru": "Указанная область",
+        "en": "Indicated area",
+    },
+
+    # ── KASALLIKLAR MA'LUMOTNOMASI ────────────────────────────────
+    "reference_btn": {
+        "uz": "📚 Kasalliklar ma'lumotnomasi",
+        "ru": "📚 Справочник заболеваний",
+        "en": "📚 Disease reference",
+    },
+    "ref_choose_category": {
+        "uz": "📚 <b>Kasalliklar ma'lumotnomasi</b>\n\nBo'limni tanlang:",
+        "ru": "📚 <b>Справочник заболеваний</b>\n\nВыберите раздел:",
+        "en": "📚 <b>Disease reference</b>\n\nChoose a section:",
+    },
+    "ref_choose_disease": {
+        "uz": "Kasallikni tanlang:",
+        "ru": "Выберите заболевание:",
+        "en": "Choose a condition:",
+    },
+    "ref_back_to_categories": {
+        "uz": "⬅️ Bo'limlarga qaytish",
+        "ru": "⬅️ К разделам",
+        "en": "⬅️ Back to sections",
+    },
+    "ref_back_to_list": {
+        "uz": "⬅️ Ro'yxatga qaytish",
+        "ru": "⬅️ К списку",
+        "en": "⬅️ Back to list",
+    },
+    "ref_prev": {"uz": "◀️ Oldingi", "ru": "◀️ Назад", "en": "◀️ Prev"},
+    "ref_next": {"uz": "Keyingi ▶️", "ru": "Далее ▶️", "en": "Next ▶️"},
+    "ref_cat_tooth": {"uz": "🦷 Tish qattiq to'qimalari", "ru": "🦷 Твёрдые ткани зуба", "en": "🦷 Hard dental tissues"},
+    "ref_cat_pulp": {"uz": "🔴 Pulpa kasalliklari", "ru": "🔴 Заболевания пульпы", "en": "🔴 Pulp diseases"},
+    "ref_cat_periapical": {"uz": "🦷 Periapikal kasalliklar", "ru": "🦷 Периапикальные заболевания", "en": "🦷 Periapical diseases"},
+    "ref_cat_periodontal": {"uz": "🩸 Parodont kasalliklari", "ru": "🩸 Заболевания пародонта", "en": "🩸 Periodontal diseases"},
+    "ref_cat_mucosa": {"uz": "👄 Shilliq qavat, til, lab", "ru": "👄 Слизистая, язык, губы", "en": "👄 Mucosa, tongue, lips"},
+    "ref_cat_jaw": {"uz": "🦴 Jag' suyaklari", "ru": "🦴 Челюстные кости", "en": "🦴 Jaw bones"},
+    "ref_cat_tmj": {"uz": "😬 Jag' bo'g'imi (TMJ)", "ru": "😬 Сустав (ВНЧС)", "en": "😬 Jaw joint (TMJ)"},
+    "ref_cat_trauma": {"uz": "🤕 Travmatik shikastlanishlar", "ru": "🤕 Травматические повреждения", "en": "🤕 Traumatic injuries"},
+    "ref_cat_dentition": {"uz": "🦷 Rivojlanish va ortodontik", "ru": "🦷 Развитие и ортодонтия", "en": "🦷 Development & orthodontics"},
+    "ref_cat_salivary": {"uz": "💧 So'lak bezlari", "ru": "💧 Слюнные железы", "en": "💧 Salivary glands"},
 }
 
 

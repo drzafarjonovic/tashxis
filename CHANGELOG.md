@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.5.0] - 2026-06
+
+### Tashxis aniqligi — joylashuvni belgilash
+Tish bilan bog'liq kategoriyalarda (tish, travma, parodont, jag') tashxisdan
+oldin zararlangan sohani aniqlashtiruvchi qadamlar qo'shildi:
+- **Qaysi jag'?** (yuqori/pastki)
+- **Qaysi tomon?** (o'ng/chap)
+- **Qaysi tish?** (kurak / qoziq / kichik oziq / katta oziq) — faqat tish/travma uchun
+- Har bir savolda "Bilmayman" varianti bor; tanlangan soha natijada
+  "🦷 Ko'rsatilgan soha: pastki o'ng katta oziq tish" ko'rinishida chiqadi.
+- Joylashuv tasniflovchi (diagnostik) emas — u tashxisni tavsiflaydi, Bayes
+  mexanizmiga ta'sir qilmaydi (savollar soni chegarasiga ham kirmaydi).
+
+### Yangi bo'lim — Kasalliklar ma'lumotnomasi
+Asosiy menyuga **📚 Kasalliklar ma'lumotnomasi** tugmasi qo'shildi:
+- 10 ta bo'lim (tish/pulpa/periapikal/parodont/shilliq/jag'/TMJ/travma/
+  rivojlanish/so'lak bezlari) → kasallik tanlash (uzun ro'yxatlar sahifalanadi)
+  → tanlangan kasallik haqida **to'liq ma'lumot** (tavsif, simptomlar,
+  differensial, davolash, xavfli belgilar).
+- Orqaga qaytish tugmalari bilan qulay navigatsiya; barcha 121 kasallik mavjud.
+- Ma'lumot rendering kodi tashxis natijasi bilan umumiy funksiyaga birlashtirildi.
+
+### Texnik
+- Yangi FSM holati `localizing`; `loc_*` va `rc_/rd_/rhome` callback'lari.
+- `bot/keyboards.py` ga katalog va joylashuv klaviaturalari qo'shildi.
+
 ## [1.4.0] - 2026-06
 
 ### Har bir kasallik uchun to'liq ma'lumot (tashxisdan keyin)
