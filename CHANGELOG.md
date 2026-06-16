@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.4] - 2026-06 — /dbtest qotib qolishi tuzatildi
+
+- `/dbtest` natijasi endi **oddiy matn** sifatida yuboriladi (HTML parse'siz) —
+  asyncpg xatosidagi `< > &` belgilari xabarni buzmaydi (avval "tekshirilmoqda"da
+  qotib qolardi).
+- Ulanish diagnostikasiga **qat'iy timeout** (`asyncio.wait_for`, 15s) qo'shildi —
+  endi har doim natija qaytaradi.
+
 ## [1.7.3] - 2026-06 — DB diagnostikasi (/dbtest) va mustahkam ulanish
 
 - Yangi **`/dbtest`** admin buyrug'i: jonli ulanishni sinaydi va **aniq xato

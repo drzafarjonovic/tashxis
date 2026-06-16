@@ -61,8 +61,12 @@ async def cmd_dbtest(message: Message, state: FSMContext):
     if not _is_admin(message.from_user.id):
         return
     await message.answer("⏳ Ma'lumotlar bazasi tekshirilmoqda...")
-    result = await db_diagnose()
-    await message.answer(f"🗄 <b>DB test natijasi:</b>\n\n{result}")
+    try:
+        result = await db_diagnose()
+    except Exception as exc:  # noqa: BLE001
+        result = f"Diagnostika xatosi: {type(exc).__name__}: {exc}"
+    # ODDIY MATN (parse_mode=None) — xato matnidagi < > & belgilari xabarni buzmaydi
+    await message.answer(f"🗄 DB test natijasi:\n\n{result}", parse_mode=None)
 
 
 @admin_router.message(Command("admin"))

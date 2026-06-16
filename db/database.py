@@ -9,6 +9,7 @@ asyncpg o'rnatilmagan muhitda ham import qilish mumkin.
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from pathlib import Path
 from typing import Optional
@@ -103,7 +104,7 @@ async def _ensure_schema() -> None:
 
 
 async def diagnose() -> str:
-    """Jonli ulanishni sinaydi va aniq natija/xatoni matn sifatida qaytaradi."""
+    """Jonli ulanishni sinaydi va aniq natija/xatoni ODDIY MATN sifatida qaytaradi."""
     if not settings.db_enabled:
         return "DATABASE_URL berilmagan."
     try:
@@ -113,27 +114,37 @@ async def diagnose() -> str:
 
     if _pool is not None:
         try:
-            val = await _pool.fetchval("SELECT 1")
+            val = await asyncio.wait_for(_pool.fetchval("SELECT 1"), timeout=12)
             return f"✅ DB ulangan va ishlayapti (SELECT 1 = {val})."
         except Exception as exc:  # noqa: BLE001
             return f"⚠️ Pool mavjud, lekin so'rov xato berdi:\n{type(exc).__name__}: {exc}"
 
-    # Pool yo'q — yangi ulanish sinab, aniq xatoni qaytaramiz
-    try:
+    # Pool yo'q — yangi ulanish sinab, aniq xatoni qaytaramiz (qat'iy timeout bilan)
+    async def _try_connect():
         conn = await asyncpg.connect(
             dsn=settings.database_url,
-            timeout=20,
+            timeout=12,
             ssl=_ssl_context(),
             statement_cache_size=0,
         )
-        val = await conn.fetchval("SELECT 1")
-        await conn.close()
+        try:
+            return await conn.fetchval("SELECT 1")
+        finally:
+            await conn.close()
+
+    try:
+        val = await asyncio.wait_for(_try_connect(), timeout=15)
         return f"✅ Yangi ulanish muvaffaqiyatli (SELECT 1 = {val}). Botni qayta deploy qiling."
+    except asyncio.TimeoutError:
+        return (
+            "❌ Ulanish vaqti tugadi (timeout, 15s). Ehtimol host/port noto'g'ri yoki "
+            "tarmoq yopiq. Pooler URL ni tekshiring: "
+            "aws-0-...pooler.supabase.com:6543"
+        )
     except Exception as exc:  # noqa: BLE001
         return (
-            f"❌ Ulanib bo'lmadi:\n<b>{type(exc).__name__}</b>: {exc}\n\n"
-            "Tekshiring: pooler URL (aws-0-...pooler.supabase.com:6543), "
-            "user `postgres.<ref>`, parol to'g'riligi."
+            f"❌ Ulanib bo'lmadi:\n{type(exc).__name__}: {exc}\n\n"
+            "Tekshiring: pooler URL, user 'postgres.<ref>', parol to'g'riligi."
         )
 
 
