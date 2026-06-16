@@ -238,8 +238,26 @@ async def _show_result(
         alt_text = ", ".join(_esc(a) for a in alternatives)
         lines += ["", f"🔄 <b>{_esc(t('alternatives_label', lang))}:</b> {alt_text}"]
 
+    # Kasallik haqida to'liq ma'lumot (mavjud bo'lsa)
+    description = result.get("description", "")
+    if description:
+        lines += ["", f"📖 <b>{_esc(t('about_disease_label', lang))}</b>", _esc(description)]
+
+    symptoms_text = result.get("symptoms_text", "")
+    if symptoms_text:
+        lines += ["", f"🔬 <b>{_esc(t('symptoms_label', lang))}</b>", _esc(symptoms_text)]
+
+    differential = result.get("differential", "")
+    if differential:
+        lines += ["", f"🔀 <b>{_esc(t('differential_label', lang))}</b>", _esc(differential)]
+
+    treatment = result.get("treatment", "")
+    if treatment:
+        lines += ["", f"💊 <b>{_esc(t('treatment_label', lang))}</b>", _esc(treatment)]
+
     explanation = result.get("explanation", "")
-    if explanation:
+    if explanation and not (description or treatment):
+        # Boy ma'lumot bo'lmasa, qisqa avtomatik izohga qaytamiz
         lines += ["", t("ai_explanation_label", lang), _esc(explanation)]
 
     red_flags = result.get("red_flags", [])

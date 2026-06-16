@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.4.0] - 2026-06
+
+### Har bir kasallik uchun to'liq ma'lumot (tashxisdan keyin)
+Tashxis aniqlangandan so'ng foydalanuvchiga kasallik bo'yicha to'liq ma'lumot
+va aniq tavsiya beriladi. `Disease` modeli 4 ta yangi maydon bilan kengaytirildi
+(har biri 3 tilda — uz/ru/en):
+- **description** — kasallik haqida tavsif (klinika, sabab)
+- **symptoms_text** — asosiy simptomlar
+- **differential** — differensial tashxis (qaysi kasalliklardan farqlanadi)
+- **treatment** — davolash / "nima qilish kerak"
+
+Barcha **121 kasallik** uchun ushbu 4 blok to'ldirildi (`medical/info.py` da
+markazlashtirilgan va import paytida biriktiriladi). Natija xabari endi
+"Kasallik haqida → Asosiy belgilar → Farqlash → Davolash/nima qilish kerak →
+Xavfli belgilar" tartibida ko'rsatiladi.
+
+### Aniqlashtirilgan tashxis
+- `O'tkir o'choqli pulpit` namuna sifatida to'liq ishlab chiqildi (foydalanuvchi
+  tasdiqlagan format asosida).
+- Yangi farqlovchi savol: "Og'riq xurujlari qisqami (10-30 daqiqa), oraliqlari
+  uzoqmi?" — o'choqli pulpitni diffuz pulpitdan aniq ajratadi.
+
+### Eslatma
+- Tibbiy matn ochiq stomatologiya manbalari asosida, faqat ma'lumot maqsadida
+  tayyorlangan — aniq tashxis uchun shifokorga murojaat qilinadi.
+
 ## [1.3.0] - 2026-06
 
 ### To'liq tibbiy taksonomiya (qolgan barcha kategoriyalar)

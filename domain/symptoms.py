@@ -35,6 +35,11 @@ QUESTIONS: Dict[str, Dict[str, str]] = {
         "ru": "Боль приходит приступами (то появляется, то проходит)?",
         "en": "Does the pain come in attacks (comes and goes)?",
     },
+    "short_pain_attacks": {
+        "uz": "Og'riq xurujlari qisqami (10-30 daqiqa), orasidagi tinch oraliqlar uzoqmi?",
+        "ru": "Болевые приступы короткие (10-30 минут), а промежутки между ними длительные?",
+        "en": "Are the pain attacks short (10-30 min) with long pain-free intervals between them?",
+    },
     "pain_triggered": {
         "uz": "Og'riq faqat biror narsa tekkanda boshlanadimi (sovuq, shirin, chaynash)?",
         "ru": "Боль начинается только при воздействии (холодное, сладкое, жевание)?",
@@ -877,6 +882,7 @@ CANDIDATE_SYMPTOMS: Dict[str, List[str]] = {
         "sweet_sensitivity",
         "hot_sensitivity",
         "pain_attacks",
+        "short_pain_attacks",
         "hot_increases_pain",
         "cold_relieves_pain",
         "cold_prolonged",

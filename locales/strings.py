@@ -192,6 +192,26 @@ STRINGS = {
         "ru": "💡 Объяснение:",
         "en": "💡 Explanation:",
     },
+    "about_disease_label": {
+        "uz": "Kasallik haqida",
+        "ru": "О заболевании",
+        "en": "About the condition",
+    },
+    "symptoms_label": {
+        "uz": "Asosiy belgilar",
+        "ru": "Основные симптомы",
+        "en": "Key symptoms",
+    },
+    "differential_label": {
+        "uz": "Farqlash (differensial tashxis)",
+        "ru": "Дифференциальная диагностика",
+        "en": "Differential diagnosis",
+    },
+    "treatment_label": {
+        "uz": "Davolash / nima qilish kerak",
+        "ru": "Лечение / что делать",
+        "en": "Treatment / what to do",
+    },
     "disclaimer": {
         "uz": "<i>(Bu natija tibbiy xulosa emas. Aniq tashxis uchun stomatologga murojaat qiling.)</i>",
         "ru": "<i>(Этот результат не является медицинским заключением. Обратитесь к стоматологу.)</i>",

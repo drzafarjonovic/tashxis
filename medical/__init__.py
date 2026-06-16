@@ -8,6 +8,7 @@ from medical.diseases.tmj import TMJ_DISEASES
 from medical.diseases.trauma import TRAUMA_DISEASES
 from medical.diseases.dentition import DENTITION_DISEASES
 from medical.diseases.salivary import SALIVARY_DISEASES
+from medical.info import DISEASE_INFO
 
 ALL_DISEASES = (
     ALL_TOOTH_DISEASES
@@ -19,6 +20,22 @@ ALL_DISEASES = (
     + DENTITION_DISEASES
     + SALIVARY_DISEASES
 )
+
+# Boy ma'lumot bloklarini (info.py) Disease obyektlariga biriktirish.
+# Inline ma'lumotga ega kasalliklar (masalan namuna sifatidagi o'choqli pulpit)
+# ustiga yozilmaydi.
+for _d in ALL_DISEASES:
+    _info = DISEASE_INFO.get(_d.id)
+    if not _info:
+        continue
+    if not _d.description:
+        _d.description = _info.get("description", {})
+    if not _d.symptoms_text:
+        _d.symptoms_text = _info.get("symptoms_text", {})
+    if not _d.differential:
+        _d.differential = _info.get("differential", {})
+    if not _d.treatment:
+        _d.treatment = _info.get("treatment", {})
 
 # Diagnostik guruhlar — engine foydalanuvchi tanlagan kategoriya bo'yicha ishlaydi.
 # "tooth" guruhiga barcha tish kasalliklari (karies + nokarioz + pulpit + periapikal)

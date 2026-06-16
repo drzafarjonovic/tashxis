@@ -553,24 +553,136 @@ acute_pulpitis_focal = Disease(
         "pain_attacks": True,
     },
     optional_features={
-        "cold_prolonged": True,
+        "short_pain_attacks": True,
         "localized_pain": True,
+        "cold_prolonged": True,
         "hot_increases_pain": True,
+        "cavity_visible": True,
+        "bad_smell": True,
     },
     negative_features={
         "percussion_pain": True,
         "gum_swelling": True,
         "irradiation": True,
+        "no_pain": True,
     },
     discriminators=[
-        "spontan, qisqa xurujli og'riq",
-        "tunda kuchayadi, og'riqsiz oraliqlar uzun",
-        "og'riq aniq bir tishda lokal",
+        "spontan, qisqa xurujli og'riq (10-30 daqiqa), oraliqlari uzoq",
+        "tunda, yotgan holatda kuchayadi",
+        "og'riq aniq bitta tishda lokal, tarqalmaydi",
     ],
     red_flags=[
-        "og'riq xurujlari uzayishi (diffuz pulpitga o'tish)",
-        "issiqdan keskin kuchayish",
+        "og'riq xurujlari uzayib, doimiyga aylanishi (diffuz pulpitga o'tish)",
+        "issiqdan keskin kuchayuvchi og'riq",
     ],
+    description={
+        "uz": (
+            "O'tkir o'choqli pulpit — tish pulpasi (nervi)ning chegaralangan "
+            "qismida boshlanadigan o'tkir yallig'lanish. Odatda pulpaga "
+            "kasallik qo'zg'atuvchi mikroblar kirishi (infeksiya) natijasida "
+            "yuzaga keladi. Ko'pincha sababchi tishdagi o'z vaqtida "
+            "davolanmagan chuqur kariesning asorati hisoblanadi."
+        ),
+        "ru": (
+            "Острый очаговый пульпит — острое воспаление, формирующееся в "
+            "ограниченном участке пульпы (нерва) зуба. Как правило, связано с "
+            "проникновением в пульпу патогенных микроорганизмов (инфицирование) "
+            "и чаще всего является следствием невылеченного вовремя глубокого "
+            "кариеса причинного зуба."
+        ),
+        "en": (
+            "Acute focal pulpitis is an acute inflammation forming in a limited "
+            "area of the tooth pulp (nerve). It usually results from microbial "
+            "invasion of the pulp and is most often a complication of deep "
+            "caries that was not treated in time."
+        ),
+    },
+    symptoms_text={
+        "uz": (
+            "• Asosiy belgi — og'riq. Dastlabki kunlarda og'riq xurujli, "
+            "otib-kesib turuvchi, ko'pincha tunda (yotganda) paydo bo'ladi.\n"
+            "• Xurujlar qisqa (odatda 10-30 daqiqa, kamdan-kam 1 soatgacha), "
+            "ular orasidagi tinch oraliqlar uzoq.\n"
+            "• Harorat ta'siriga uzoq davom etuvchi javob: issiq og'riqni "
+            "kuchaytiradi, sovuq biroz tinchlantiradi.\n"
+            "• Ko'rikda sababchi tishda keng va chuqur karioz kovak, ko'p "
+            "miqdorda yumshagan dentin topiladi.\n"
+            "• Ba'zi bemorlarda og'izdan yoqimsiz hid bo'lishi mumkin."
+        ),
+        "ru": (
+            "• Главный симптом — боль. В первые дни она приступообразная, "
+            "стреляющая, режущая, часто возникает ночью (в положении лёжа).\n"
+            "• Приступы короткие (обычно 10-30 минут, редко до часа), "
+            "промежутки между ними длительные.\n"
+            "• Долговременная реакция на температурные раздражители: горячее "
+            "вызывает боль, холодное немного успокаивает.\n"
+            "• При осмотре у причинного зуба — обширная глубокая кариозная "
+            "полость и много размягчённого дентина.\n"
+            "• У части пациентов возможен неприятный запах изо рта."
+        ),
+        "en": (
+            "• The main symptom is pain. In the first days it is paroxysmal, "
+            "shooting and cutting, often occurring at night (when lying down).\n"
+            "• Attacks are short (usually 10-30 min, rarely up to an hour) with "
+            "long pain-free intervals between them.\n"
+            "• Prolonged reaction to temperature: hot triggers pain, cold "
+            "slightly relieves it.\n"
+            "• On examination the causative tooth has a wide, deep carious "
+            "cavity with abundant softened dentin.\n"
+            "• Some patients may have an unpleasant mouth odour."
+        ),
+    },
+    differential={
+        "uz": (
+            "O'tkir diffuz pulpit (uzun xuruj, tarqaluvchi og'riq), o'tkirlashgan "
+            "surunkali pulpit, o'tkir va o'tkirlashgan surunkali apikal "
+            "periodontit (perkussiyada og'riq), uchlamchi nerv nevralgiyasi, "
+            "gaymorit va kataklik (alveolyar) og'riqlardan farqlanadi."
+        ),
+        "ru": (
+            "Дифференцируют с острым диффузным пульпитом (длительные приступы, "
+            "иррадиирующая боль), обострившимся хроническим пульпитом, острым и "
+            "обострившимся хроническим верхушечным периодонтитом (боль при "
+            "перкуссии), невралгией тройничного нерва, гайморитом и луночковыми "
+            "(альвеолярными) болями."
+        ),
+        "en": (
+            "Differentiated from acute diffuse pulpitis (long attacks, radiating "
+            "pain), exacerbated chronic pulpitis, acute and exacerbated chronic "
+            "apical periodontitis (pain on percussion), trigeminal neuralgia, "
+            "sinusitis and socket (alveolar) pain."
+        ),
+    },
+    treatment={
+        "uz": (
+            "Davolash o'z vaqtida va faqat stomatologiya sharoitida o'tkaziladi. "
+            "Vaziyatga qarab shifokor pulpani olib tashlash usulini (vital yoki "
+            "devital amputatsiya) tanlaydi; ko'pincha devital usul qo'llanadi.\n\n"
+            "Nima qilish kerak: iloji boricha tezroq stomatolog-terapevtga "
+            "murojaat qiling. Uyda o'zingizni davolashga urinmang — bu holatni "
+            "yomonlashtirishi mumkin. Davolanmasa, o'choqli pulpit avval "
+            "surunkali shaklga, keyin esa xavfliroq kasallik — periodontitga "
+            "o'tadi."
+        ),
+        "ru": (
+            "Лечение проводят своевременно и только в условиях стоматологической "
+            "клиники. В зависимости от ситуации врач выбирает метод ампутации "
+            "пульпы (витальный или девитальный); чаще используется девитальный.\n\n"
+            "Что делать: как можно раньше обратитесь к стоматологу-терапевту. Не "
+            "пытайтесь лечить заболевание дома — это может усугубить состояние. "
+            "Без лечения очаговый пульпит сначала переходит в хроническую форму, "
+            "а затем в более опасное заболевание — периодонтит."
+        ),
+        "en": (
+            "Treatment must be timely and only in a dental clinic. Depending on "
+            "the situation the dentist chooses a pulp amputation method (vital or "
+            "devital); the devital method is used most often.\n\n"
+            "What to do: see a general dentist as soon as possible. Do not try to "
+            "treat it at home — this can worsen the condition. Untreated, focal "
+            "pulpitis first becomes chronic and then progresses to a more "
+            "dangerous disease — periodontitis."
+        ),
+    },
 )
 
 acute_pulpitis_diffuse = Disease(
@@ -593,6 +705,7 @@ acute_pulpitis_diffuse = Disease(
     negative_features={
         "percussion_pain": True,
         "localized_pain": True,
+        "short_pain_attacks": True,
     },
     discriminators=[
         "kuchli, uzluksizga yaqin og'riq",
