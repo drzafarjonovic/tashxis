@@ -42,7 +42,7 @@ from engine import (
     is_emergency,
     should_stop,
 )
-from locales.strings import t
+from locales.strings import WELCOME_MULTI, t
 from medical import ALL_DISEASES, DISEASES_BY_CATEGORY
 
 logger = logging.getLogger(__name__)
@@ -131,7 +131,7 @@ def _append_info_blocks(lines: list, lang: str, description: str,
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
-    welcome = t("welcome", "uz")
+    welcome = WELCOME_MULTI  # til hali tanlanmagan — 3 tilda ko'rsatamiz
     sent = False
     if os.path.exists(LOGO_PATH):
         try:

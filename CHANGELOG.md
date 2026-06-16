@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2] - 2026-06 — Trilingual start fix
+
+- `/start` endi **3 tilda** (o'zbek/rus/ingliz) qisqacha yo'riqnoma va til tanlash
+  tugmalarini ko'rsatadi (avval faqat o'zbekcha chiqardi). Til tanlangach, qolgan
+  oqim tanlangan tilda davom etadi.
+- Yangi `WELCOME_MULTI` matni (732 belgi — logo caption limitiga mos).
+
 ## [1.6.1] - 2026-06 — Oral Detect (rebrand + admin contact)
 
 ### Brending
