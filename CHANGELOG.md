@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.6] - 2026-06 — DB heartbeat (Supabase keep-alive)
+
+- Bot ichida fon vazifasi qo'shildi: har 6 soatda DB ga `SELECT 1` yuboriladi,
+  shunda Supabase bepul tarifi nofaollikdan pauza qilmaydi. DB o'chiq bo'lsa
+  (pool yo'q) — jimgina o'tkazib yuboradi; xatoda bot to'xtamaydi (faqat log).
+- Qo'shimcha zaxira sifatida GitHub Actions keep-alive workflow ham mavjud
+  (PR `ci/supabase-keepalive`).
+
 ## [1.7.5] - 2026-06 — /dbtest aniqroq xato talqini
 
 - `/dbtest` Supabase pooler xatolarini aniqroq izohlaydi: "tenant/user not found"

@@ -61,6 +61,25 @@ async def set_commands(bot: Bot) -> None:
             logger.warning("Admin buyruqlarini o'rnatib bo'lmadi: %s", exc)
 
 
+DB_HEARTBEAT_INTERVAL = 6 * 3600  # 6 soat — Supabase keep-alive
+
+
+async def db_heartbeat() -> None:
+    """Har 6 soatda DB ga 'SELECT 1' yuboradi — Supabase nofaollikdan pauza
+    qilmasligi uchun. DB o'chiq bo'lsa (pool yo'q) — jimgina o'tkazib yuboradi."""
+    from db.database import get_pool
+    while True:
+        await asyncio.sleep(DB_HEARTBEAT_INTERVAL)
+        pool = get_pool()
+        if pool is None:
+            continue
+        try:
+            await pool.fetchval("SELECT 1")
+            logger.info("DB heartbeat OK")
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("DB heartbeat xato: %s", exc)
+
+
 async def main() -> None:
     logger.info(
         "%s v%s ishga tushmoqda... (AI_ENABLED=%s, ADMIN_ID=%s)",
@@ -70,6 +89,7 @@ async def main() -> None:
 
     runner = await start_web()
     await init_db()
+    asyncio.create_task(db_heartbeat())
 
     # Self-Learning: DB'dagi o'rganilgan prior overrides'ni yuklash (bo'lsa)
     try:
